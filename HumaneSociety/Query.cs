@@ -8,18 +8,20 @@ namespace HumaneSociety
 {
     public static class Query 
     {
-        public void UpdateAdoption(bool isApproved, Adoption adoption)
+        public static void UpdateAdoption(bool isApproved, Adoption adoption)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            Adoption adoptionToUpdate = db.Adoptions.SingleOrDefault(a => adoption.AdoptionId == a.AdoptionId);
             switch (isApproved)
             {
                 case true:
-                    db.Adoptions.SingleOrDefault(a => adoption.AdoptionId == a.AdoptionId);
-
+                    adoptionToUpdate.ApprovalStatus = "approved";
                     break;
                 case false:
+                    adoptionToUpdate.ApprovalStatus = "available";
                     break;
             }
+            db.SubmitChanges();
         }
     }
 }
