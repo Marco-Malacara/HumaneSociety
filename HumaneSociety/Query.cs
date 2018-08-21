@@ -12,7 +12,7 @@ namespace HumaneSociety
         public static void UpdateAdoption(bool isApproved, Adoption adoption)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            Adoption adoptionToUpdate = db.Adoptions.SingleOrDefault(a => adoption.AdoptionId == a.AdoptionId);
+            var adoptionToUpdate = db.Adoptions.SingleOrDefault(a => adoption.AdoptionId == a.AdoptionId);
             switch (isApproved)
             {
                 case true:
