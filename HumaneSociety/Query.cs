@@ -117,7 +117,7 @@ namespace HumaneSociety
         //}
         private static bool NameIsInSpecies (HumaneSocietyDataContext database ,string stringToCompare )
         {
-            return database.Species.SingleOrDefault(Specy => Specy.Name.ToLower() == speciesName.ToLower()) != null;
+            return database.Species.SingleOrDefault(Specy => Specy.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
     }
