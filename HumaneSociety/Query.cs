@@ -46,7 +46,7 @@ namespace HumaneSociety
             var search = db.Animals.Select(animal => animal).OrderBy(animal => animal.AnimalId);
             return search;
         }
-<<<<<<< HEAD
+
 
         public static Employee RetrieveEmployeeUser(string email, int employeeNumber)
         {
@@ -69,8 +69,6 @@ namespace HumaneSociety
             }
             return newEmployee;
         }
-=======
-        
->>>>>>> 0dbe2810389615c84d3b7aa41151c5648a105e52
+
     }
 }
