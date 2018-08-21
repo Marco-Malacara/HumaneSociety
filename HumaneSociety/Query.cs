@@ -34,7 +34,6 @@ namespace HumaneSociety
 
         public static void UpdateShot(string shotType, Animal animal)
         {
-            //HumaneSocietyDataContext db = new HumaneSocietyDataContext();var animalToUpdate = db.AnimalShots.Join(Shot => db.Shots.Name, AnimalShot => AnimalShot.ShotId, Shot => Shot.ShotId, (AnimalShot, Shot) => new { AnimalShot, Shot });
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             var animalToUpdate = db.AnimalShots.AsEnumerable().Join(db.Shots.AsEnumerable(), AnimalShot => AnimalShot.ShotId, Shot => Shot.ShotId, (AnimalShot, Shot) => new
@@ -82,6 +81,11 @@ namespace HumaneSociety
                 Console.WriteLine("The new Employee could not be added to the data base!");
             }
             return newEmployee;
+        }
+
+        public static void EnterUpdate(Animal animal, Dictionary<int,string> updates)
+        {
+
         }
 
     }
