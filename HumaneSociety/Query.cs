@@ -25,10 +25,10 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
         
-        public static IEnumerable<Adoption> GetPendingAdoptions()
+        public static IQueryable<Adoption> GetPendingAdoptions()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var pendingAdoptions = db.Adoptions.Select(Animal => Animal).Where(Animal => Animal.ApprovalStatus.ToLower() == "pending");
+            var pendingAdoptions = db.Adoptions.Select(Adoption => Adoption).Where(Adoption => Adoption.ApprovalStatus.ToLower() == "pending");
             return pendingAdoptions;
         }
 
@@ -254,6 +254,7 @@ namespace HumaneSociety
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
+<<<<<<< HEAD
         public static void RunEmployeeQueries(Employee employee, string input)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -274,6 +275,26 @@ namespace HumaneSociety
             {
                 //TODO!
             }
+=======
+        public static Client GetClient(string userName, string password)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var clientInformation = db.Clients.Distinct().Select(Client => Client).Where(Client => Client.UserName == userName && Client.Password == password);
+            return clientInformation as Client;
+        }
+        public static IQueryable<Adoption> GetUserAdoptionStatus(Client client)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var pendingAdoptions = db.Adoptions.Where(Adoption => Adoption.ClientId == client.ClientId).Select(Adoption => Adoption);
+            return pendingAdoptions;
+        }
+
+        public static Animal GetAnimalByID(int iD)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
+            return (Animal)specifiedAnimal;
+>>>>>>> ab92112cdee5a34f1880e4a143f15c8435880993
         }
     }
 }

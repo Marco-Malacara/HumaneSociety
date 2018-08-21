@@ -91,7 +91,7 @@ namespace HumaneSociety
                 List<string> Adoptions = new List<string>();
                 foreach(Adoption adoption in pendingAdoptions)
                 {
-                    Adoptions.Add(adoption.Animal.Name + " " + adoption.Animal.Species.Name + " " + adoption.ApprovalStatus);
+                    Adoptions.Add(adoption.Animal.Name + " " + adoption.Animal.Specy.Name + " " + adoption.ApprovalStatus);
                 }
                 UserInterface.DisplayUserOptions(Adoptions);
                 UserInterface.DisplayUserOptions("press enter to continue");
