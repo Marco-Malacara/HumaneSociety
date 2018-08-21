@@ -55,6 +55,7 @@ namespace HumaneSociety
 
         public static IEnumerable<Animal> SearchForAnimalByMultipleTraits(Dictionary<int,string> searchParameters)
         {
+
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             
             if (searchParameters.ContainsKey(1))
@@ -117,6 +118,7 @@ namespace HumaneSociety
                 animals = (from animal in animals where animal.AnimalId == int.Parse(searchParameters[8]) select animal);
             }
             return animals;
+
         }
 
         public static Employee RetrieveEmployeeUser(string email, int employeeNumber)
@@ -315,6 +317,28 @@ namespace HumaneSociety
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
+<<<<<<< HEAD
+        public static void RunEmployeeQueries(Employee employee, string input)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            if (input == "create")
+            {
+                db.Employees.InsertOnSubmit(employee);
+                db.SubmitChanges();
+            }
+            else if (input == "read")
+            {
+                // TO DO!
+            }
+            else if (input == "update")
+            {
+                // TODO!
+            }
+            else if (input == "delete")
+            {
+                //TODO!
+            }
+=======
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -333,6 +357,7 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
             return (Animal)specifiedAnimal;
+>>>>>>> ab92112cdee5a34f1880e4a143f15c8435880993
         }
     }
 }
