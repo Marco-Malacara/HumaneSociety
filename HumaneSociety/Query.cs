@@ -31,5 +31,12 @@ namespace HumaneSociety
             var pendingAdoptions = db.Adoptions.Select(Animal => Animal).Where(Animal => Animal.ApprovalStatus == "pending");
             return pendingAdoptions;
         }
+
+        public static IEnumerable<Animal> SearchForAnimalByMultipleTraits()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var search = db.Animals.Select(animal => animal).OrderBy(animal => animal.AnimalId);
+            return search;
+        }
     }
 }
