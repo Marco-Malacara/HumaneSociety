@@ -191,7 +191,7 @@ namespace HumaneSociety
             db.SubmitChanges();
 
         }
-        public static IQueryable<Specy> GetSpecies()
+        public static Specy GetSpecies()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             string speciesName = UserInterface.GetStringData("the animal's", "species");
@@ -200,8 +200,8 @@ namespace HumaneSociety
                 db.Species.InsertOnSubmit(new Specy() { Name = speciesName });
                 db.SubmitChanges();
             }
-            var selectedSpecy = db.Species.Select(Specy => Specy).Where(Specy => Specy.Name == speciesName).Cast<Specy>();
-            return selectedSpecy;
+            var selectedSpecy = db.Species.Distinct().Select(Specy => Specy).Where(Specy => Specy.Name.ToLower() == speciesName.ToLower());
+            return selectedSpecy as Specy;
         }
         public static bool CheckEmployeeUserNameExist(string userName)
         {
@@ -226,7 +226,7 @@ namespace HumaneSociety
        
         private static bool NameIsInSpeciesTable (HumaneSocietyDataContext database ,string stringToCompare )
         {
-            return database.Species.SingleOrDefault(Specy => Specy.Name.ToLower() == stringToCompare.ToLower()) != null;
+            return database.Species.Distinct().SingleOrDefault(Specy => Specy.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
     }
