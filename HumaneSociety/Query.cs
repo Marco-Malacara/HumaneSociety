@@ -102,5 +102,19 @@ namespace HumaneSociety
 
         }
 
+        public static bool CheckEmployeeUserNameExist(string userName)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            
+            if(db.Employees.Single(user => userName == user.UserName) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
