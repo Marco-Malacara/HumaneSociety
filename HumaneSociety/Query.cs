@@ -116,5 +116,12 @@ namespace HumaneSociety
             }
         }
 
+        public static void AddUsernameAndPassword(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Employees.InsertOnSubmit(employee);
+            db.SubmitChanges();
+        }
+
     }
 }
