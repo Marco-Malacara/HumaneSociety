@@ -32,11 +32,20 @@ namespace HumaneSociety
             return pendingAdoptions;
         }
 
+
         public static IEnumerable<AnimalShot> GetShots(Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var shots = db.AnimalShots.Join(db.Animals.AsEnumerable(), AnimalShot => AnimalShot.AnimalId, Animal => Animal.AnimalId, (AnimalShot, Animal) => new { AnimalShot, Animal }).Select(a => a).Where(a => a.AnimalShot.AnimalId == a.Animal.AnimalId).Cast<AnimalShot>();
             return shots;
         }
+
+        public static IEnumerable<Animal> SearchForAnimalByMultipleTraits()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var search = db.Animals.Select(animal => animal).OrderBy(animal => animal.AnimalId);
+            return search;
+        }
+        
     }
 }

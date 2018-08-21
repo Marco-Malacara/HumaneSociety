@@ -48,7 +48,7 @@ namespace HumaneSociety
         //    HumaneSocietyDataContext context = new HumaneSocietyDataContext();
         //    var animals = from data in context.Animals select data;
 
-        //    var searchParameters = GetAnimalCriteria();
+        //var searchParameters = GetAnimalCriteria();
         //    if (searchParameters.ContainsKey(1))
         //    {
         //        animals = (from animal in animals where animal.Species.Name == searchParameters[1] select animal);
