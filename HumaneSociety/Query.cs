@@ -268,5 +268,12 @@ namespace HumaneSociety
             var pendingAdoptions = db.Adoptions.Where(Adoption => Adoption.ClientId == client.ClientId).Select(Adoption => Adoption);
             return pendingAdoptions;
         }
+
+        public static Animal GetAnimalByID(int iD)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
+            return (Animal)specifiedAnimal;
+        }
     }
 }
