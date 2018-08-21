@@ -12,7 +12,7 @@ namespace HumaneSociety
         public static void UpdateAdoption(bool isApproved, Adoption adoption)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var adoptionToUpdate = db.Adoptions.SingleOrDefault(a => adoption.AdoptionId == a.AdoptionId);
+            var adoptionToUpdate = db.Adoptions.Single(a => adoption.AdoptionId == a.AdoptionId);
             switch (isApproved)
             {
                 case true:
@@ -82,6 +82,12 @@ namespace HumaneSociety
             return newEmployee;
         }
 
+        public static Employee EmployeeLogin(string userName, string password)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var employee = db.Employees.Single(info => userName == info.UserName && password == info.Password);
+            return employee;
+        }
 
         public static void EnterUpdate(Animal animal, Dictionary<int, string> updates)
         {
@@ -147,12 +153,31 @@ namespace HumaneSociety
             }
             db.SubmitChanges();
         }
+
         public static void RemoveAnimal(Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
 
+        }
+
+        //public static IEnumerable<Specy> GetSpecies()
+        //{
+        //    HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+        //    var joinedAnimalAndSpecy = db.Animals.AsEnumerable().Join(db.Species.AsEnumerable(), Animal => Animal.SpeciesId, Specy => Specy.SpeciesId, (Animal, Specy) => new { Animal, Specy });
+        //    string speciesName = UserInterface.GetStringData("the animal's", "species");
+        //    if (NameIsInSpecies(db, speciesName))
+        //    {
+
+        //    }
+
+        //    var selectedSpecy = joinedAnimalAndSpecy.Select(Animal => Animal.Specy);
+        //    return selectedSpecy;
+        //}
+        private static bool NameIsInSpecies (HumaneSocietyDataContext database ,string stringToCompare )
+        {
+            return database.Species.SingleOrDefault(Specy => Specy.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
     }
