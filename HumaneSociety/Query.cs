@@ -91,7 +91,97 @@ namespace HumaneSociety
 
         public static void EnterUpdate(Animal animal, Dictionary<int, string> updates)
         {
-
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var animalToUpdate = db.Animals.Single(a => a.AnimalId == animal.AnimalId);
+            if (updates.ContainsKey(1))
+            {
+                var possibleSpecies = db.Species.SingleOrDefault(s => updates[1].ToLower().Trim() == s.Name.ToLower());
+                if (possibleSpecies == null)
+                {
+                    throw new Exception("Species could not be updated because a valid species was not found.");
+                    //function to create new species?
+                }
+                else
+                {
+                    animalToUpdate.SpeciesId = possibleSpecies.SpeciesId;
+                }   
+            }
+            if (updates.ContainsKey(2))
+            {
+                animalToUpdate.Name = updates[2];
+            }
+            if (updates.ContainsKey(3))
+            {
+                int possibleAge;
+                bool isAge = Int32.TryParse(updates[3], out possibleAge);
+                if (isAge == true)
+                {
+                    animalToUpdate.Age = possibleAge;
+                }
+                else
+                {
+                    throw new Exception("Age could not be updated because a valid number was not entered.");
+                }  
+            }
+            if (updates.ContainsKey(4))
+            {
+                if (updates[4].ToLower().Trim() == "aggressive" || updates[4].ToLower().Trim() == "passive" || updates[4].ToLower().Trim() == "friendly")
+                {
+                    animalToUpdate.Demeanor = updates[4].ToLower().Trim();
+                }
+                else
+                {
+                    throw new Exception("Demeanor was not updated because the new demeanor entered was not valid.");
+                }
+            }    
+            if (updates.ContainsKey(5))
+            {
+                if (updates[5].ToLower().Trim() == "true" || updates[5].Trim() == "1" || updates[5].Trim().ToLower() == "yes")
+                {
+                    animalToUpdate.KidFriendly = true;
+                }
+                else if (updates[5].ToLower().Trim() == "false" || updates[5].Trim() == "0" || updates[5].Trim().ToLower() == "no")
+                {
+                    animalToUpdate.KidFriendly = false;
+                }
+                else
+                {
+                    throw new Exception("Kid friendly value was not updated because a valid value was not entered.");
+                }
+            }
+            if (updates.ContainsKey(6))
+            {
+                if (updates[6].ToLower().Trim() == "true" || updates[6].Trim() == "1" || updates[6].Trim().ToLower() == "yes")
+                {
+                    animalToUpdate.PetFriendly = true;
+                }
+                else if (updates[6].ToLower().Trim() == "false" || updates[6].Trim() == "0" || updates[6].Trim().ToLower() == "no")
+                {
+                    animalToUpdate.PetFriendly = false;
+                }
+                else
+                {
+                    throw new Exception("Pet friendly value was not updated because a valid value was not entered.");
+                }
+            }
+            if (updates.ContainsKey(7))
+            {
+                int possibleWeight;
+                bool isWeight = Int32.TryParse(updates[7], out possibleWeight);
+                if (isWeight == true)
+                {
+                    animalToUpdate.Weight = possibleWeight;
+                }
+                else
+                {
+                    throw new Exception("Weight could not be updated because a valid number was not entered.");
+                }
+            }
+            if (updates.ContainsKey(8))
+            {
+                throw new Exception("Id cannot be changed.");
+            }
+            db.SubmitChanges();
         }
 
         public static void RemoveAnimal(Animal animal)
@@ -113,6 +203,27 @@ namespace HumaneSociety
             var selectedSpecy = db.Species.Select(Specy => Specy).Where(Specy => Specy.Name == speciesName).Cast<Specy>();
             return selectedSpecy;
         }
+        public static bool CheckEmployeeUserNameExist(string userName)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            
+            if(db.Employees.Single(user => userName == user.UserName) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static void AddUsernameAndPassword(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Employees.InsertOnSubmit(employee);
+            db.SubmitChanges();
+        }
+       
         private static bool NameIsInSpeciesTable (HumaneSocietyDataContext database ,string stringToCompare )
         {
             return database.Species.SingleOrDefault(Specy => Specy.Name.ToLower() == stringToCompare.ToLower()) != null;
