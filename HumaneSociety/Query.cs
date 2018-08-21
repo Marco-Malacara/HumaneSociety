@@ -55,9 +55,7 @@ namespace HumaneSociety
 
         public static IEnumerable<Animal> SearchForAnimalByMultipleTraits()
         {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var search = db.Animals.Select(animal => animal).OrderBy(animal => animal.AnimalId);
-            return search;
+            
         }
 
         public static Employee RetrieveEmployeeUser(string email, int employeeNumber)
