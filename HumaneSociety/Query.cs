@@ -89,5 +89,23 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
+        public static IEnumerable<Specy> GetSpecies()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var joinedAnimalAndSpecy = db.Animals.AsEnumerable().Join(db.Species.AsEnumerable(), Animal => Animal.SpeciesId, Specy => Specy.SpeciesId, (Animal, Specy) => new { Animal, Specy });
+            string speciesName = UserInterface.GetStringData("the animal's", "species");
+            if (NameIsInSpecies(db, speciesName))
+            {
+
+            }
+
+            var selectedSpecy = joinedAnimalAndSpecy.Select(Animal => Animal.Specy);
+            return selectedSpecy;
+        }
+        private static bool NameIsInSpecies (HumaneSocietyDataContext database ,string stringToCompare )
+        {
+            return database.Species.SingleOrDefault(Specy => Specy.Name.ToLower() == speciesName.ToLower()) != null;
+        }
+
     }
 }
