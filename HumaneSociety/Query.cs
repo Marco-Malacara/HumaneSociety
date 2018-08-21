@@ -192,7 +192,7 @@ namespace HumaneSociety
 
         }
 
-<<<<<<< HEAD
+
         public static bool CheckEmployeeUserNameExist(string userName)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
