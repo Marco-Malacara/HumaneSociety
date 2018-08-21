@@ -68,7 +68,7 @@ namespace HumaneSociety
             {
                 foreach(Adoption adoption in adoptions)
                 {
-                    adoptionInfo.Add($"{counter}. {adoption.Client.FirstName} {adoption.Client.LastName}, {adoption.Animal.Name} {adoption.Animal.Species}");
+                    adoptionInfo.Add($"{counter}. {adoption.Client.FirstName} {adoption.Client.LastName}, {adoption.Animal.Name} {adoption.Animal.Specy}");
                     counter++;
                 }
                 UserInterface.DisplayUserOptions(adoptionInfo);
@@ -120,7 +120,7 @@ namespace HumaneSociety
             bool isFinished = false;
             Console.Clear();
             while(!isFinished){
-                List<string> options = new List<string>() { "Animal found:", animal.Name, animal.Species.Name, "Would you like to:", "1. Get Info", "2. Update Info", "3. Check shots", "4. Return" };
+                List<string> options = new List<string>() { "Animal found:", animal.Name, animal.Specy.Name, "Would you like to:", "1. Get Info", "2. Update Info", "3. Check shots", "4. Return" };
                 UserInterface.DisplayUserOptions(options);
                 int input = UserInterface.GetIntegerData();
                 if (input == 4)
@@ -296,11 +296,11 @@ namespace HumaneSociety
             }
             else
             {
-                UpdateEmployeeInfo();
+                SetEmployeeUsernameAndPassword();
             }
         }
 
-        private void UpdateEmployeeInfo()
+        private void SetEmployeeUsernameAndPassword()
         {
             GetUserName();
             GetPassword();

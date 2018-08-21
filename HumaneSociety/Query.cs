@@ -192,6 +192,27 @@ namespace HumaneSociety
 
         }
 
+<<<<<<< HEAD
+        public static bool CheckEmployeeUserNameExist(string userName)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            
+            if(db.Employees.Single(user => userName == user.UserName) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static void AddUsernameAndPassword(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Employees.InsertOnSubmit(employee);
+            db.SubmitChanges();
+        }
         //public static IEnumerable<Specy> GetSpecies()
         //{
         //    HumaneSocietyDataContext db = new HumaneSocietyDataContext();
