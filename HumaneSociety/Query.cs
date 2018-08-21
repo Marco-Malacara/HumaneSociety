@@ -38,5 +38,27 @@ namespace HumaneSociety
             var search = db.Animals.Select(animal => animal).OrderBy(animal => animal.AnimalId);
             return search;
         }
+
+        public static Employee RetrieveEmployeeUser(string email, int employeeNumber)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            Employee newEmployee = new Employee
+            {
+                EmployeeNumber = employeeNumber,
+                Email = email
+            };
+
+            db.Employees.InsertOnSubmit(newEmployee);
+
+            try
+            {
+                db.SubmitChanges();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("The new Employee could not be added to the data base!");
+            }
+            return newEmployee;
+        }
     }
 }
