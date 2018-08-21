@@ -35,7 +35,6 @@ namespace HumaneSociety
         public static void UpdateShot(string shotType, Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
             var animalToUpdate = db.AnimalShots.AsEnumerable().Join(db.Shots.AsEnumerable(), AnimalShot => AnimalShot.ShotId, Shot => Shot.ShotId, (AnimalShot, Shot) => new
             {
                 AnimalShot,
@@ -83,8 +82,16 @@ namespace HumaneSociety
             return newEmployee;
         }
 
-        public static void EnterUpdate(Animal animal, Dictionary<int,string> updates)
+
+        public static void EnterUpdate(Animal animal, Dictionary<int, string> updates)
         {
+
+        }
+        public static void RemoveAnimal(Animal animal)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Animals.DeleteOnSubmit(animal);
+            db.SubmitChanges();
 
         }
 
