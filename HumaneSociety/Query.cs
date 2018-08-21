@@ -25,10 +25,10 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
         
-        public static IEnumerable<Adoption> GetPendingAdoptions()
+        public static IQueryable<Adoption> GetPendingAdoptions()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var pendingAdoptions = db.Adoptions.Select(Animal => Animal).Where(Animal => Animal.ApprovalStatus.ToLower() == "pending");
+            var pendingAdoptions = db.Adoptions.Select(Adoption => Adoption).Where(Adoption => Adoption.ApprovalStatus.ToLower() == "pending");
             return pendingAdoptions;
         }
 
@@ -259,8 +259,14 @@ namespace HumaneSociety
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var clientInformation = db.Clients.Select(Client => Client).Where(Client => Client.UserName == userName && Client.Password == password);
+            var clientInformation = db.Clients.Distinct().Select(Client => Client).Where(Client => Client.UserName == userName && Client.Password == password);
             return clientInformation as Client;
+        }
+        public static IQueryable<Adoption> GetUserAdoptionStatus(Client client)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var pendingAdoptions = db.Adoptions.Where(Adoption => Adoption.ClientId == client.ClientId).Select(Adoption => Adoption);
+            return pendingAdoptions;
         }
     }
 }
