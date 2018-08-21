@@ -8,6 +8,7 @@ namespace HumaneSociety
 {
     public static class Query 
     {
+
         public static void UpdateAdoption(bool isApproved, Adoption adoption)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -22,6 +23,13 @@ namespace HumaneSociety
                     break;
             }
             db.SubmitChanges();
+        }
+        
+        public static IEnumerable<Adoption> GetPendingAdoptions()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var pendingAdoptions = db.Adoptions.Select(Animal => Animal).Where(Animal => Animal.ApprovalStatus == "pending");
+            return pendingAdoptions;
         }
     }
 }
