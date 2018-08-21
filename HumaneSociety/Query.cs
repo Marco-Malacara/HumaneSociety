@@ -253,5 +253,27 @@ namespace HumaneSociety
         {
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
+
+        public static void RunEmployeeQueries(Employee employee, string input)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            if (input == "create")
+            {
+                db.Employees.InsertOnSubmit(employee);
+                db.SubmitChanges();
+            }
+            else if (input == "read")
+            {
+                // TO DO!
+            }
+            else if (input == "update")
+            {
+                // TODO!
+            }
+            else if (input == "delete")
+            {
+                //TODO!
+            }
+        }
     }
 }
