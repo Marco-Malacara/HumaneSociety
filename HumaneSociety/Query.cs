@@ -31,5 +31,21 @@ namespace HumaneSociety
             var pendingAdoptions = db.Adoptions.Select(Animal => Animal).Where(Animal => Animal.ApprovalStatus.ToLower() == "pending");
             return pendingAdoptions;
         }
+
+        public static void UpdateShot(string shotType, Animal animal)
+        {
+            //HumaneSocietyDataContext db = new HumaneSocietyDataContext();var animalToUpdate = db.AnimalShots.Join(Shot => db.Shots.Name, AnimalShot => AnimalShot.ShotId, Shot => Shot.ShotId, (AnimalShot, Shot) => new { AnimalShot, Shot });
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            
+            var animalToUpdate = db.AnimalShots.AsEnumerable().Join(db.Shots.AsEnumerable(), AnimalShot => AnimalShot.ShotId, Shot => Shot.ShotId, (AnimalShot, Shot) => new
+            {
+                AnimalShot,
+                Shot
+            }).Select(Animal => Animal).Where(Animal => Animal.AnimalShot.AnimalId == animal.AnimalId);
+            animalToUpdate.Select(Animal => Animal.Shot.Name = shotType);
+            animalToUpdate.Select(Animal => Animal.AnimalShot.DateReceived = DateTime.Now);
+            db.SubmitChanges();
+           
+        }
     }
 }
