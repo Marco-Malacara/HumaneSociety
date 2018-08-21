@@ -12,7 +12,7 @@ namespace HumaneSociety
         public static void UpdateAdoption(bool isApproved, Adoption adoption)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var adoptionToUpdate = db.Adoptions.SingleOrDefault(a => adoption.AdoptionId == a.AdoptionId);
+            var adoptionToUpdate = db.Adoptions.Single(a => adoption.AdoptionId == a.AdoptionId);
             switch (isApproved)
             {
                 case true:
@@ -82,11 +82,18 @@ namespace HumaneSociety
             return newEmployee;
         }
 
+        public static Employee EmployeeLogin(string userName, string password)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var employee = db.Employees.Single(info => userName == info.UserName && password == info.Password);
+            return employee;
+        }
 
         public static void EnterUpdate(Animal animal, Dictionary<int, string> updates)
         {
 
         }
+
         public static void RemoveAnimal(Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
