@@ -255,5 +255,12 @@ namespace HumaneSociety
         {
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
+
+        public static Client GetClient(string userName, string password)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var clientInformation = db.Clients.Select(Client => Client).Where(Client => Client.UserName == userName && Client.Password == password);
+            return clientInformation as Client;
+        }
     }
 }
