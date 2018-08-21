@@ -136,20 +136,50 @@ namespace HumaneSociety
             }    
             if (updates.ContainsKey(5))
             {
-
-                //kid friendly
+                if (updates[5].ToLower().Trim() == "true" || updates[5].Trim() == "1" || updates[5].Trim().ToLower() == "yes")
+                {
+                    animalToUpdate.KidFriendly = true;
+                }
+                else if (updates[5].ToLower().Trim() == "false" || updates[5].Trim() == "0" || updates[5].Trim().ToLower() == "no")
+                {
+                    animalToUpdate.KidFriendly = false;
+                }
+                else
+                {
+                    throw new Exception("Kid friendly value was not updated because a valid value was not entered.");
+                }
             }
             if (updates.ContainsKey(6))
             {
-                //pet friendly
+                if (updates[6].ToLower().Trim() == "true" || updates[6].Trim() == "1" || updates[6].Trim().ToLower() == "yes")
+                {
+                    animalToUpdate.PetFriendly = true;
+                }
+                else if (updates[6].ToLower().Trim() == "false" || updates[6].Trim() == "0" || updates[6].Trim().ToLower() == "no")
+                {
+                    animalToUpdate.PetFriendly = false;
+                }
+                else
+                {
+                    throw new Exception("Pet friendly value was not updated because a valid value was not entered.");
+                }
             }
             if (updates.ContainsKey(7))
             {
-                //weight
+                int possibleWeight;
+                bool isWeight = Int32.TryParse(updates[7], out possibleWeight);
+                if (isWeight == true)
+                {
+                    animalToUpdate.Weight = possibleWeight;
+                }
+                else
+                {
+                    throw new Exception("Weight could not be updated because a valid number was not entered.");
+                }
             }
             if (updates.ContainsKey(8))
             {
-                //Id
+                throw new Exception("Id cannot be changed.");
             }
             db.SubmitChanges();
         }
