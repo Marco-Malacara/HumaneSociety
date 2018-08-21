@@ -203,6 +203,29 @@ namespace HumaneSociety
             var selectedSpecy = db.Species.Distinct().Select(Specy => Specy).Where(Specy => Specy.Name.ToLower() == speciesName.ToLower());
             return selectedSpecy as Specy;
         }
+
+        public static DietPlan GetDietPlan()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            string dietPlanName = UserInterface.GetStringData("the animal's", "diet plan");
+            if (!NameIsInDietPlanTable(db, dietPlanName))
+            {
+                db.DietPlans.InsertOnSubmit(new DietPlan() { Name = dietPlanName,
+                                                             FoodType = UserInterface.GetStringData("the diet plan's", "food type"),
+                                                             FoodAmountInCups = UserInterface.GetIntegerData("the diet plan's", "amount in cups")
+                });
+                db.SubmitChanges();
+            }
+            var selectedDietPlan = db.DietPlans.Distinct().Select(DietPlan => DietPlan).Where(DietPlan => DietPlan.Name.ToLower() == dietPlanName.ToLower());
+            return selectedDietPlan as DietPlan;
+        }
+
+        public static void AddAnimal(Animal animal)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Animals.InsertOnSubmit(animal);
+            db.SubmitChanges();
+        }
         public static bool CheckEmployeeUserNameExist(string userName)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -228,6 +251,9 @@ namespace HumaneSociety
         {
             return database.Species.Distinct().SingleOrDefault(Specy => Specy.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
-
+        private static bool NameIsInDietPlanTable(HumaneSocietyDataContext database, string stringToCompare)
+        {
+            return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
+        }
     }
 }

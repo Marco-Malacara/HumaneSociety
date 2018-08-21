@@ -233,7 +233,7 @@ namespace HumaneSociety
                 return;
             }
             var animal = animals[0];
-            List<string> options = new List<string>() { "Animal found:", animal.Name, animal.Species.Name, "would you like to delete?" };
+            List<string> options = new List<string>() { "Animal found:", animal.Name, animal.Specy.Name, "would you like to delete?" };
             if ((bool)UserInterface.GetBitData(options))
             {
                 Query.RemoveAnimal(animal);
@@ -243,7 +243,7 @@ namespace HumaneSociety
         {
             Console.Clear();
             Animal animal = new Animal();
-            animal.Species = Query.GetSpecies();
+            animal.Specy = Query.GetSpecies();
             animal.Name = UserInterface.GetStringData("name", "the animal's");
             animal.Age = UserInterface.GetIntegerData("age", "the animal's");
             animal.Demeanor = UserInterface.GetStringData("demeanor", "the animal's");
