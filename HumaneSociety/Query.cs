@@ -85,7 +85,67 @@ namespace HumaneSociety
 
         public static void EnterUpdate(Animal animal, Dictionary<int, string> updates)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var animalToUpdate = db.Animals.Single(a => a.AnimalId == animal.AnimalId);
+            if (updates.ContainsKey(1))
+            {
+                var possibleSpecies = db.Species.SingleOrDefault(s => updates[1].ToLower().Trim() == s.Name.ToLower());
+                if (possibleSpecies == null)
+                {
+                    throw new Exception("Species could not be updated because a valid species was not found.");
+                    //function to create new species?
+                }
+                else
+                {
+                    animalToUpdate.SpeciesId = possibleSpecies.SpeciesId;
+                }   
+            }
+            if (updates.ContainsKey(2))
+            {
+                animalToUpdate.Name = updates[2];
+            }
+            if (updates.ContainsKey(3))
+            {
+                int possibleAge;
+                bool isAge = Int32.TryParse(updates[3], out possibleAge);
+                if (isAge == true)
+                {
+                    animalToUpdate.Age = possibleAge;
+                }
+                else
+                {
+                    throw new Exception("Age could not be updated because a valid number was not entered.");
+                }  
+            }
+            if (updates.ContainsKey(4))
+            {
+                if (updates[4].ToLower().Trim() == "aggressive" || updates[4].ToLower().Trim() == "passive" || updates[4].ToLower().Trim() == "friendly")
+                {
+                    animalToUpdate.Demeanor = updates[4].ToLower().Trim();
+                }
+                else
+                {
+                    throw new Exception("Demeanor was not updated because the new demeanor entered was not valid.");
+                }
+            }    
+            if (updates.ContainsKey(5))
+            {
 
+                //kid friendly
+            }
+            if (updates.ContainsKey(6))
+            {
+                //pet friendly
+            }
+            if (updates.ContainsKey(7))
+            {
+                //weight
+            }
+            if (updates.ContainsKey(8))
+            {
+                //Id
+            }
+            db.SubmitChanges();
         }
         public static void RemoveAnimal(Animal animal)
         {
