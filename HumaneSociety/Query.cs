@@ -12,7 +12,7 @@ namespace HumaneSociety
         public static IEnumerable<Adoption> GetPendingAdoptions()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var pendingAdoptions = db.Adoptions.Select(Animal => Animal).Where(Animal => Animal.ApprovalStatus == "pending");
+            var pendingAdoptions = db.Adoptions.Select(Animal => Animal).Where(Animal => Animal.ApprovalStatus.ToLower() == "pending");
             return pendingAdoptions;
         }
     }
