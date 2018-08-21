@@ -25,10 +25,10 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
         
-        public static IEnumerable<Adoption> GetPendingAdoptions()
+        public static IQueryable<Adoption> GetPendingAdoptions()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var pendingAdoptions = db.Adoptions.Select(Animal => Animal).Where(Animal => Animal.ApprovalStatus.ToLower() == "pending");
+            var pendingAdoptions = db.Adoptions.Select(Adoption => Adoption).Where(Adoption => Adoption.ApprovalStatus.ToLower() == "pending");
             return pendingAdoptions;
         }
 
@@ -250,8 +250,41 @@ namespace HumaneSociety
             db.SubmitChanges();
 
         }
+        public static Specy GetSpecies()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            string speciesName = UserInterface.GetStringData("the animal's", "species");
+            if (!NameIsInSpeciesTable(db, speciesName))
+            {
+                db.Species.InsertOnSubmit(new Specy() { Name = speciesName });
+                db.SubmitChanges();
+            }
+            var selectedSpecy = db.Species.Distinct().Select(Specy => Specy).Where(Specy => Specy.Name.ToLower() == speciesName.ToLower());
+            return selectedSpecy as Specy;
+        }
 
+        public static DietPlan GetDietPlan()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            string dietPlanName = UserInterface.GetStringData("the animal's", "diet plan");
+            if (!NameIsInDietPlanTable(db, dietPlanName))
+            {
+                db.DietPlans.InsertOnSubmit(new DietPlan() { Name = dietPlanName,
+                                                             FoodType = UserInterface.GetStringData("the diet plan's", "food type"),
+                                                             FoodAmountInCups = UserInterface.GetIntegerData("the diet plan's", "amount in cups")
+                });
+                db.SubmitChanges();
+            }
+            var selectedDietPlan = db.DietPlans.Distinct().Select(DietPlan => DietPlan).Where(DietPlan => DietPlan.Name.ToLower() == dietPlanName.ToLower());
+            return selectedDietPlan as DietPlan;
+        }
 
+        public static void AddAnimal(Animal animal)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Animals.InsertOnSubmit(animal);
+            db.SubmitChanges();
+        }
         public static bool CheckEmployeeUserNameExist(string userName)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -272,23 +305,34 @@ namespace HumaneSociety
             db.Employees.InsertOnSubmit(employee);
             db.SubmitChanges();
         }
-        //public static IEnumerable<Specy> GetSpecies()
-        //{
-        //    HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-        //    var joinedAnimalAndSpecy = db.Animals.AsEnumerable().Join(db.Species.AsEnumerable(), Animal => Animal.SpeciesId, Specy => Specy.SpeciesId, (Animal, Specy) => new { Animal, Specy });
-        //    string speciesName = UserInterface.GetStringData("the animal's", "species");
-        //    if (NameIsInSpecies(db, speciesName))
-        //    {
-
-        //    }
-
-        //    var selectedSpecy = joinedAnimalAndSpecy.Select(Animal => Animal.Specy);
-        //    return selectedSpecy;
-        //}
-        private static bool NameIsInSpecies (HumaneSocietyDataContext database ,string stringToCompare )
+       
+        private static bool NameIsInSpeciesTable (HumaneSocietyDataContext database ,string stringToCompare )
         {
-            return database.Species.SingleOrDefault(Specy => Specy.Name.ToLower() == stringToCompare.ToLower()) != null;
+            return database.Species.Distinct().SingleOrDefault(Specy => Specy.Name.ToLower() == stringToCompare.ToLower()) != null;
+        }
+        private static bool NameIsInDietPlanTable(HumaneSocietyDataContext database, string stringToCompare)
+        {
+            return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
+        public static Client GetClient(string userName, string password)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var clientInformation = db.Clients.Distinct().Select(Client => Client).Where(Client => Client.UserName == userName && Client.Password == password);
+            return clientInformation as Client;
+        }
+        public static IQueryable<Adoption> GetUserAdoptionStatus(Client client)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var pendingAdoptions = db.Adoptions.Where(Adoption => Adoption.ClientId == client.ClientId).Select(Adoption => Adoption);
+            return pendingAdoptions;
+        }
+
+        public static Animal GetAnimalByID(int iD)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
+            return (Animal)specifiedAnimal;
+        }
     }
 }

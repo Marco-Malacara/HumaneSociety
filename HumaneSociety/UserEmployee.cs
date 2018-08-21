@@ -225,6 +225,7 @@ namespace HumaneSociety
         }       
 
         private void RemoveAnimal()
+
         {
             Console.Clear();
             Dictionary<int, string> searchParameters = new Dictionary<int, string>();
