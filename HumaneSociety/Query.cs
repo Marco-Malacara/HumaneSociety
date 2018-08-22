@@ -312,7 +312,6 @@ namespace HumaneSociety
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
-
         public static void RunEmployeeQueries(Employee employee, string input)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -334,7 +333,6 @@ namespace HumaneSociety
                 //TODO!
             }
         }
-
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -353,7 +351,50 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
             return (Animal)specifiedAnimal;
+        }
 
+        public static void Adopt(Animal animal, Client client)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var joinedAnimalAndAdoptionTable = db.Adoptions.AsEnumerable().Distinct().Join(db.Animals.AsEnumerable(), Adoption => Adoption.AnimalId, Animal => Animal.AnimalId, (Adoption, Animal) => new { Adoption, Animal });
+            var clientAnimal = joinedAnimalAndAdoptionTable.Select(a => a).Where(a => a.Animal.AnimalId == animal.AnimalId && a.Adoption.ClientId == client.ClientId);
+            clientAnimal.Select(a => a.Animal.AdoptionStatus = "pending");
+            clientAnimal.Select(a => a.Adoption.ApprovalStatus = "pending");
+            clientAnimal.Select(a => a.Adoption.AdoptionFee = 75);
+            db.SubmitChanges();
+        }
+        public static IQueryable<Client> RetrieveClients()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var clients = db.Clients.Distinct().Select(Client => Client);
+            return clients;
+        }
+        public static IQueryable<USState> GetStates()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var states = db.USStates.Distinct().Select(State => State);
+            return states;
+        }
+        public static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateId)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var joinedClientAndAddressTable = db.Clients.AsEnumerable().Distinct().Join(db.Addresses.AsEnumerable().Distinct(), Client => Client.AddressId, Address => Address.AddressId, (Client, Address) => new { Client, Address });
+            var clientAddress = joinedClientAndAddressTable.Where(a => a.Address.AddressId == a.Client.AddressId).Select(a => a.Address);
+
+            Client newClient = new Client()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                UserName = username,
+                Password = password,
+                Email = email,
+                Address = (Address)clientAddress,
+            };
+            newClient.Address.AddressLine1 = streetAddress;
+            newClient.Address.Zipcode = zipCode;
+            newClient.Address.USStateId = stateId;
+            db.Clients.InsertOnSubmit(newClient);
+            db.SubmitChanges();
         }
 
         public static void ReadCSVFile(string file)
