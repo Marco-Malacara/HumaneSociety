@@ -463,6 +463,7 @@ namespace HumaneSociety
                 USStateId = stateId
             };
             db.Clients.InsertOnSubmit(newClient);
+            db.Addresses.InsertOnSubmit(newClient.Address);
             db.SubmitChanges();
         }
         public static void UpdateClient(Client client)
