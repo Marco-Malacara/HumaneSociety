@@ -131,7 +131,7 @@ namespace HumaneSociety
         public static void DisplayAnimalInfo(Animal animal)
         {
             Room animalRoom = Query.GetRoom(animal.AnimalId);
-            List<string> info = new List<string>() {"ID: " + animal.AnimalId, animal.Name, animal.Age + "years old", "Demeanor: " + animal.Demeanor, "Kid friendly: " + BoolToYesNo(animal.KidFriendly), "pet friendly: " + BoolToYesNo(animal.PetFriendly), "Location: " + animalRoom.RoomId, "Weight: " + animal.Weight.ToString(),  "Food amoumnt in cups:" + animal.DietPlan.FoodAmountInCups};
+            List<string> info = new List<string>() {"ID: " + animal.AnimalId, animal.Name, animal.Age + " years old", "Demeanor: " + animal.Demeanor, "Kid friendly: " + BoolToYesNo(animal.KidFriendly), "Pet friendly: " + BoolToYesNo(animal.PetFriendly), "Location: " + animalRoom.RoomId, "Weight: " + animal.Weight.ToString(),  "Food amoumnt in cups: " + animal.DietPlan.FoodAmountInCups};
             DisplayUserOptions(info);
             Console.ReadLine();
 
