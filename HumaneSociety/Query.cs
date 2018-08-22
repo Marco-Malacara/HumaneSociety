@@ -397,7 +397,7 @@ namespace HumaneSociety
         public static IEnumerable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var clients = db.Clients.Distinct().Select(Client => Client);
+            var clients = db.Clients.Select(Client => Client);
             return clients;
         }
         public static IQueryable<USState> GetStates()
