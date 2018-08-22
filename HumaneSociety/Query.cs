@@ -288,7 +288,7 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             
-            if(db.Employees.Single(user => userName == user.UserName) != null)
+            if(db.Employees.SingleOrDefault(user => userName == user.UserName) != null)
             {
                 return true;
             }
