@@ -245,6 +245,7 @@ namespace HumaneSociety
                 
             }
             db.SubmitChanges();
+            return;
         }
 
         private static void UpdateRoom(Animal animalToUpdate, HumaneSocietyDataContext db, string userEnteredNumber)
@@ -495,6 +496,7 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             foreach (string[] s in results)
             {
+                
                 bool rowIsValid = true;
                 for (int i = 0; i < s.Length; i++)
                 {
