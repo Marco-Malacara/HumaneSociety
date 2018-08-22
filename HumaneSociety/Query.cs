@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +9,8 @@ namespace HumaneSociety
 {
     public static class Query 
     {
+
+        public delegate void EmployeeToVoidFunction(Employee employee);
 
         public static void UpdateAdoption(bool isApproved, Adoption adoption)
         {
@@ -256,8 +258,8 @@ namespace HumaneSociety
                 db.Species.InsertOnSubmit(new Specy() { Name = speciesName });
                 db.SubmitChanges();
             }
-            var selectedSpecy = db.Species.Distinct().Select(Specy => Specy).Where(Specy => Specy.Name.ToLower() == speciesName.ToLower());
-            return selectedSpecy as Specy;
+            var selectedSpecy = db.Species.Distinct().Single(Specy => Specy.Name.ToLower() == speciesName.ToLower());
+            return selectedSpecy;
         }
 
         public static DietPlan GetDietPlan()
@@ -272,8 +274,8 @@ namespace HumaneSociety
                 });
                 db.SubmitChanges();
             }
-            var selectedDietPlan = db.DietPlans.Distinct().Select(DietPlan => DietPlan).Where(DietPlan => DietPlan.Name.ToLower() == dietPlanName.ToLower());
-            return selectedDietPlan as DietPlan;
+            var selectedDietPlan = db.DietPlans.Distinct().Single(DietPlan => DietPlan.Name.ToLower() == dietPlanName.ToLower());
+            return selectedDietPlan;
         }
 
         public static void AddAnimal(Animal animal)
@@ -312,32 +314,11 @@ namespace HumaneSociety
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
-        public static void RunEmployeeQueries(Employee employee, string input)
-        {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            if (input == "create")
-            {
-                db.Employees.InsertOnSubmit(employee);
-                db.SubmitChanges();
-            }
-            else if (input == "read")
-            {
-                // TO DO!
-            }
-            else if (input == "update")
-            {
-                // TODO!
-            }
-            else if (input == "delete")
-            {
-                //TODO!
-            }
-        }
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var clientInformation = db.Clients.Distinct().Select(Client => Client).Where(Client => Client.UserName == userName && Client.Password == password);
-            return clientInformation as Client;
+            var clientInformation = db.Clients.Distinct().Single(Client => Client.UserName == userName && Client.Password == password);
+            return clientInformation;
         }
         public static IQueryable<Adoption> GetUserAdoptionStatus(Client client)
         {
@@ -349,20 +330,75 @@ namespace HumaneSociety
         public static Animal GetAnimalByID(int iD)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
-            return (Animal)specifiedAnimal;
+            var specifiedAnimal = db.Animals.Single(Animal => Animal.AnimalId == iD);
+            return specifiedAnimal;
         }
 
         public static void Adopt(Animal animal, Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var joinedAnimalAndAdoptionTable = db.Adoptions.AsEnumerable().Distinct().Join(db.Animals.AsEnumerable(), Adoption => Adoption.AnimalId, Animal => Animal.AnimalId, (Adoption, Animal) => new { Adoption, Animal });
-            var clientAnimal = joinedAnimalAndAdoptionTable.Select(a => a).Where(a => a.Animal.AnimalId == animal.AnimalId && a.Adoption.ClientId == client.ClientId);
-            clientAnimal.Select(a => a.Animal.AdoptionStatus = "pending");
-            clientAnimal.Select(a => a.Adoption.ApprovalStatus = "pending");
-            clientAnimal.Select(a => a.Adoption.AdoptionFee = 75);
+            var clientAnimal = joinedAnimalAndAdoptionTable.Single(a => a.Animal.AnimalId == animal.AnimalId && a.Adoption.ClientId == client.ClientId);
+            clientAnimal.Animal.AdoptionStatus = "pending";
+            clientAnimal.Adoption.ApprovalStatus = "pending";
+            clientAnimal.Adoption.AdoptionFee = 75;
             db.SubmitChanges();
         }
+
+        public static void RunEmployeeQueries(Employee employee, string input)
+        {
+            EmployeeToVoidFunction runQueries;
+
+            switch (input)
+            {
+                case "create":
+                    runQueries = AddUsernameAndPassword;
+                    break;
+                case "read":
+                    runQueries = ReadEmployee;
+                    break;
+                case "update":
+                    runQueries = UpdateEmployee;
+                    break;
+                case "delete":
+                    runQueries = DeleteEmployee;
+                    break;
+                default:
+                    throw new ApplicationException("Application error occured.");
+            }
+            runQueries(employee);
+        }
+
+        private static void ReadEmployee(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var displayData = db.Employees.Distinct().Single(read => read.EmployeeNumber == employee.EmployeeNumber);
+            Console.WriteLine(displayData.FirstName);
+            Console.WriteLine(displayData.LastName);
+            Console.WriteLine(displayData.UserName);
+            Console.WriteLine(displayData.Password);
+            Console.WriteLine(displayData.Email);
+            Console.WriteLine(displayData.Animals);
+            Console.WriteLine(displayData.EmployeeId);
+            Console.WriteLine(displayData.EmployeeNumber);
+        }
+
+        private static void UpdateEmployee(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var employeeToUpdate = db.Employees.Distinct().Single(user => user.EmployeeNumber == employee.EmployeeNumber);
+
+            employeeToUpdate = employee;
+            db.SubmitChanges();
+        }
+
+        private static void DeleteEmployee(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Employees.DeleteOnSubmit(employee);
+            db.SubmitChanges();
+        }
+
         public static IQueryable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -379,7 +415,8 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var joinedClientAndAddressTable = db.Clients.AsEnumerable().Distinct().Join(db.Addresses.AsEnumerable().Distinct(), Client => Client.AddressId, Address => Address.AddressId, (Client, Address) => new { Client, Address });
-            var clientAddress = joinedClientAndAddressTable.Where(a => a.Address.AddressId == a.Client.AddressId).Select(a => a.Address);
+            var client = joinedClientAndAddressTable.Single(a => a.Address.AddressId == a.Client.AddressId);
+            var clientAddress = client.Address;
 
             Client newClient = new Client()
             {
@@ -388,7 +425,7 @@ namespace HumaneSociety
                 UserName = username,
                 Password = password,
                 Email = email,
-                Address = (Address)clientAddress,
+                Address = clientAddress,
             };
             newClient.Address.AddressLine1 = streetAddress;
             newClient.Address.Zipcode = zipCode;
@@ -396,6 +433,14 @@ namespace HumaneSociety
             db.Clients.InsertOnSubmit(newClient);
             db.SubmitChanges();
         }
+        public static void UpdateClient(Client client)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var clientToUpdate = db.Clients.Distinct().Single(Client => Client.ClientId == client.ClientId);
+            clientToUpdate = client;
+            db.SubmitChanges();
+        }
+        
 
         public static Room GetRoom(int animalId)
         {
