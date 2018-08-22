@@ -595,38 +595,17 @@ namespace HumaneSociety
 
         private static bool ValidateSpeciesInput(int result, HumaneSocietyDataContext db)
         {
-            if (db.Species.SingleOrDefault(s => s.SpeciesId == result) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return db.Species.SingleOrDefault(s => s.SpeciesId == result) != null;
         }
 
         private static bool ValidateDietPlanInput(int result, HumaneSocietyDataContext db)
         {
-            if (db.DietPlans.SingleOrDefault(d => d.DietPlanId == result) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return db.DietPlans.SingleOrDefault(d => d.DietPlanId == result) != null;
         }
 
         private static bool ValidateEmployeeInput(int result, HumaneSocietyDataContext db)
         {
-            if (db.Employees.SingleOrDefault(e => e.EmployeeId == result) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return db.Employees.SingleOrDefault(e => e.EmployeeId == result) != null;
         }
     }
 }
