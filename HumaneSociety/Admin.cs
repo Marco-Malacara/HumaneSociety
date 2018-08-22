@@ -29,7 +29,7 @@ namespace HumaneSociety
         protected override void RunUserMenus()
         {
             Console.Clear();
-            List<string> options = new List<string>() { "Admin log in successful.", "What would you like to do?", "1. Create new employee", "2. Delete employee", "3. Read employee info ", "4. Update emplyee info", "(type 1, 2, 3, 4,  create, read, update, or delete)" };
+            List<string> options = new List<string>() { "Admin log in successful.", "What would you like to do?", "1. Create new employee", "2. Delete employee", "3. Read employee info ", "4. Update emplyee info", "5. Import csv file of new animals", "(type 1, 2, 3, 4, 5,  create, read, update, delete, or import)" };
             UserInterface.DisplayUserOptions(options);
             string input = UserInterface.GetUserInput();
             RunInput(input);
@@ -56,11 +56,34 @@ namespace HumaneSociety
                 UpdateEmployee();
                 RunUserMenus();
             }
+            else if (input == "5" || input.ToLower() == "import")
+            {
+                ImportCSVFile();
+                RunUserMenus(); 
+            }
             else
             {
                 UserInterface.DisplayUserOptions("Input not recognized please try again or type exit");
                 RunUserMenus();
             }
+        }
+
+        private void ImportCSVFile()
+        {
+            Console.WriteLine("Enter name of .csv file to import:");
+            string file = Console.ReadLine();
+            bool shouldImportFile = Query.CheckIfCSVFileValid(file);
+            if (shouldImportFile == true)
+            {
+                Query.ReadCSVFile(file);
+                Console.WriteLine("Import finished. Press Enter to continue.");
+            }
+            else
+            {
+                Console.WriteLine("File path was not found. Press Enter to continue.");
+            }
+            Console.ReadLine();
+            Console.Clear();
         }
 
         private void UpdateEmployee()
