@@ -400,97 +400,11 @@ namespace HumaneSociety
         public static void UpdateClient(Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            Action<Client, Client> updateClientDelegate;
             var clientToUpdate = db.Clients.Distinct().Single(Client => Client.ClientId == client.ClientId);
-            if (clientToUpdate.UserName != client.UserName)
-            {
-                updateClientDelegate = UpdateUsername;
-                updateClientDelegate(client, clientToUpdate);
-            }
-            if (clientToUpdate.Password != client.Password)
-            {
-                updateClientDelegate = UpdatePassword;
-                updateClientDelegate(client, clientToUpdate);
-            }
-            if (clientToUpdate.Email != client.Email)
-            {
-                updateClientDelegate = UpdateEmail;
-                updateClientDelegate(client, clientToUpdate);
-            }
-            if (clientToUpdate.FirstName != client.FirstName)
-            {
-                updateClientDelegate = UpdateFirstName;
-                updateClientDelegate(client, clientToUpdate);
-            }
-            if (clientToUpdate.LastName != client.LastName)
-            {
-                updateClientDelegate = UpdateLastName;
-                updateClientDelegate(client, clientToUpdate);
-            }
-            if (clientToUpdate.Address.AddressLine1 != client.Address.AddressLine1)
-            {
-                updateClientDelegate = UpdateAddress;
-                updateClientDelegate(client, clientToUpdate);
-            }
-            if (clientToUpdate.HomeSquareFootage != client.HomeSquareFootage)
-            {
-                updateClientDelegate = UpdateHomeSize;
-                updateClientDelegate(client, clientToUpdate);
-            }
-            if (clientToUpdate.Income != client.Income)
-            {
-                updateClientDelegate = UpdateIncome;
-                updateClientDelegate(client, clientToUpdate);
-            }
-            if (clientToUpdate.NumberOfKids != client.NumberOfKids)
-            {
-                updateClientDelegate = UpdateKids;
-                updateClientDelegate(client, clientToUpdate);
-            }
-
+            clientToUpdate = client;
             db.SubmitChanges();
         }
-        private static void UpdateUsername(Client client, Client clientToUpdate)
-        {
-            clientToUpdate.UserName = client.UserName;
-
-        }
-        private static void UpdatePassword(Client client, Client clientToUpdate)
-        {
-            clientToUpdate.Password = client.Password;
-
-        }
-        private static void UpdateEmail(Client client, Client clientToUpdate)
-        {
-            clientToUpdate.Email = client.Email;
-
-        }
-        private static void UpdateHomeSize(Client client, Client clientToUpdate)
-        {
-            clientToUpdate.HomeSquareFootage = client.HomeSquareFootage;
-
-        }
-        private static void UpdateIncome(Client client, Client clientToUpdate)
-        {
-            clientToUpdate.Income = client.Income;
-
-        }
-        private static void UpdateFirstName(Client client, Client clientToUpdate)
-        {
-            clientToUpdate.FirstName = client.FirstName;
-        }
-        private static void UpdateLastName(Client client, Client clientToUpdate)
-        {
-            clientToUpdate.LastName = client.LastName;
-        }
-        private static void UpdateAddress(Client client, Client clientToUpdate)
-        {
-            clientToUpdate.Address.AddressLine1 = client.Address.AddressLine1;
-        }
-        private static void UpdateKids(Client client, Client clientToUpdate)
-        {
-            clientToUpdate.NumberOfKids = client.NumberOfKids;
-        }
+        
 
         public static Room GetRoom(int animalId)
         {
