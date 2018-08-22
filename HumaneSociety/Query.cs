@@ -390,7 +390,7 @@ namespace HumaneSociety
         private static void DeleteEmployee(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var employeeToDelete = db.Employees.SingleOrDefault(user => user.EmployeeId == employee.EmployeeId);
+            var employeeToDelete = db.Employees.SingleOrDefault(user => user.EmployeeNumber == employee.EmployeeNumber);
             if (employeeToDelete != null)
             {
                 db.Employees.DeleteOnSubmit(employeeToDelete);
