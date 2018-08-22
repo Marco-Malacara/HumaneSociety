@@ -411,7 +411,7 @@ namespace HumaneSociety
             Console.Clear();
             UserInterface.DisplayUserOptions("Current Username: " + client.UserName);
             client.UserName = GetUserName();
-            Query.UpdateUsername(client);
+            Query.UpdateClient(client);
         }
 
         private void UpdateEmail()
@@ -419,7 +419,7 @@ namespace HumaneSociety
             Console.Clear();
             UserInterface.DisplayUserOptions("Current email: " + client.Email);
             client.Email = GetEmail();
-            Query.UpdateEmail(client);
+            Query.UpdateClient(client);
         }
 
         public int GetZipCode()
@@ -452,7 +452,7 @@ namespace HumaneSociety
             client.Address.USStateId = GetState();
             UserInterface.DisplayUserOptions("Please enter your street address");
             client.Address.AddressLine1 = UserInterface.GetUserInput();
-            Query.UpdateAddress(client);
+            Query.UpdateClient(client);
 
         }
         public void UpdateName()
@@ -465,23 +465,23 @@ namespace HumaneSociety
             {
                 UserInterface.DisplayUserOptions("Please enter your new first name.");
                 client.FirstName = UserInterface.GetUserInput();
-                Query.UpdateFirstName(client);
+                Query.UpdateClient(client);
 
             }
             else if (input == "last" || input == "2")
             {
                 UserInterface.DisplayUserOptions("Please enter your new last name.");
                 client.LastName = UserInterface.GetUserInput();
-                Query.UpdateLastName(client);
+                Query.UpdateClient(client);
             }
             else
             {
                 UserInterface.DisplayUserOptions("Please enter your new first name.");
                 client.FirstName = UserInterface.GetUserInput();
-                Query.UpdateFirstName(client);
+                Query.UpdateClient(client);
                 UserInterface.DisplayUserOptions("Please enter your new last name.");
                 client.LastName = UserInterface.GetUserInput();
-                Query.UpdateLastName(client);
+                Query.UpdateClient(client);
             }
         }
     }
