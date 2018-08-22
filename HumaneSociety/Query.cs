@@ -264,7 +264,8 @@ namespace HumaneSociety
             }
             else if (input == "read")
             {
-                // TO DO!
+                var readQuery = db.Employees.Select(read => read).Where(read => read.EmployeeNumber == employee.EmployeeNumber);
+                
             }
             else if (input == "update")
             {
