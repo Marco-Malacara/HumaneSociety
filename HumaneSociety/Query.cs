@@ -375,5 +375,32 @@ namespace HumaneSociety
             var clients = db.Clients.Distinct().Select(Client => Client);
             return clients;
         }
+        public static IQueryable<USState> GetStates()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var states = db.USStates.Distinct().Select(State => State);
+            return states;
+        }
+        public static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateId)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var joinedClientAndAddressTable = db.Clients.AsEnumerable().Distinct().Join(db.Addresses.AsEnumerable().Distinct(), Client => Client.AddressId, Address => Address.AddressId, (Client, Address) => new { Client, Address });
+            var clientAddress = joinedClientAndAddressTable.Where(a => a.Address.AddressId == a.Client.AddressId).Select(a => a.Address);
+
+            Client newClient = new Client()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                UserName = username,
+                Password = password,
+                Email = email,
+                Address = (Address)clientAddress,
+            };
+            newClient.Address.AddressLine1 = streetAddress;
+            newClient.Address.Zipcode = zipCode;
+            newClient.Address.USStateId = stateId;
+            db.Clients.InsertOnSubmit(newClient);
+            db.SubmitChanges();
+        }
     }
 }
