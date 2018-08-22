@@ -390,8 +390,12 @@ namespace HumaneSociety
         private static void DeleteEmployee(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            db.Employees.DeleteOnSubmit(employee);
-            db.SubmitChanges();
+            var employeeToDelete = db.Employees.SingleOrDefault(user => user.EmployeeNumber == employee.EmployeeNumber);
+            if (employeeToDelete != null)
+            {
+                db.Employees.DeleteOnSubmit(employeeToDelete);
+                db.SubmitChanges();
+            }
         }
 
         public static IEnumerable<Client> RetrieveClients()
