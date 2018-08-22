@@ -380,17 +380,18 @@ namespace HumaneSociety
             Console.WriteLine(displayData.Animals);
             Console.WriteLine(displayData.EmployeeId);
             Console.WriteLine(displayData.EmployeeNumber);
-            displayData
         }
 
         private static void UpdateEmployee(Employee employee)
         {
-
+            
         }
 
         private static void DeleteEmployee(Employee employee)
         {
-
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Employees.DeleteOnSubmit(employee);
+            db.SubmitChanges();
         }
 
         public static IQueryable<Client> RetrieveClients()
