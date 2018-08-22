@@ -57,11 +57,12 @@ namespace HumaneSociety
         {
 
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            
+
+            var animals = from data in db.Animals select data;
+
             if (searchParameters.ContainsKey(1))
             {
-                var animalsBySpecies = (from animal in animals where animal.Specy.Name == searchParameters[1] select animal);
-                
+                animals = (from animal in animals where animal.Specy.Name == searchParameters[1] select animal);
             }
             if (searchParameters.ContainsKey(2))
             {
@@ -317,7 +318,7 @@ namespace HumaneSociety
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
-<<<<<<< HEAD
+
         public static void RunEmployeeQueries(Employee employee, string input)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -338,7 +339,8 @@ namespace HumaneSociety
             {
                 //TODO!
             }
-=======
+        }
+
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -357,7 +359,7 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
             return (Animal)specifiedAnimal;
->>>>>>> ab92112cdee5a34f1880e4a143f15c8435880993
+
         }
     }
 }
