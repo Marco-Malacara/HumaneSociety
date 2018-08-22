@@ -245,9 +245,12 @@ namespace HumaneSociety
         public static void RemoveAnimal(Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            db.Animals.DeleteOnSubmit(animal);
-            db.SubmitChanges();
-
+            var animalToDelete = db.Animals.SingleOrDefault(Animal => Animal.AnimalId == animal.AnimalId);
+            if (animalToDelete != null)
+            {
+                db.Animals.DeleteOnSubmit(animalToDelete);
+                db.SubmitChanges();
+            }
         }
         public static Specy GetSpecies()
         {
@@ -258,7 +261,7 @@ namespace HumaneSociety
                 db.Species.InsertOnSubmit(new Specy() { Name = speciesName });
                 db.SubmitChanges();
             }
-            var selectedSpecy = db.Species.Distinct().Single(Specy => Specy.Name.ToLower() == speciesName.ToLower());
+            var selectedSpecy = db.Species.Distinct().SingleOrDefault(Specy => Specy.Name.ToLower() == speciesName.ToLower());
             return selectedSpecy;
         }
 
@@ -287,15 +290,7 @@ namespace HumaneSociety
         public static bool CheckEmployeeUserNameExist(string userName)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            
-            if(db.Employees.Single(user => userName == user.UserName) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return db.Employees.SingleOrDefault(user => userName == user.UserName) != null;
         }
 
         public static void AddUsernameAndPassword(Employee employee)
@@ -317,7 +312,7 @@ namespace HumaneSociety
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var clientInformation = db.Clients.Distinct().Single(Client => Client.UserName == userName && Client.Password == password);
+            var clientInformation = db.Clients.Distinct().SingleOrDefault(Client => Client.UserName == userName && Client.Password == password);
             return clientInformation;
         }
         public static IQueryable<Adoption> GetUserAdoptionStatus(Client client)
@@ -330,7 +325,7 @@ namespace HumaneSociety
         public static Animal GetAnimalByID(int iD)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var specifiedAnimal = db.Animals.Single(Animal => Animal.AnimalId == iD);
+            var specifiedAnimal = db.Animals.SingleOrDefault(Animal => Animal.AnimalId == iD);
             return specifiedAnimal;
         }
 
@@ -338,7 +333,7 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var joinedAnimalAndAdoptionTable = db.Adoptions.AsEnumerable().Distinct().Join(db.Animals.AsEnumerable(), Adoption => Adoption.AnimalId, Animal => Animal.AnimalId, (Adoption, Animal) => new { Adoption, Animal });
-            var clientAnimal = joinedAnimalAndAdoptionTable.Single(a => a.Animal.AnimalId == animal.AnimalId && a.Adoption.ClientId == client.ClientId);
+            var clientAnimal = joinedAnimalAndAdoptionTable.SingleOrDefault(a => a.Animal.AnimalId == animal.AnimalId && a.Adoption.ClientId == client.ClientId);
             clientAnimal.Animal.AdoptionStatus = "pending";
             clientAnimal.Adoption.ApprovalStatus = "pending";
             clientAnimal.Adoption.AdoptionFee = 75;
@@ -399,11 +394,11 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-        public static IQueryable<Client> RetrieveClients()
+        public static IEnumerable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var clients = db.Clients.Distinct().Select(Client => Client);
-            return clients;
+            var currentClients = db.Clients.Select(Client => Client);
+            return currentClients;
         }
         public static IQueryable<USState> GetStates()
         {
@@ -415,7 +410,7 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var joinedClientAndAddressTable = db.Clients.AsEnumerable().Distinct().Join(db.Addresses.AsEnumerable().Distinct(), Client => Client.AddressId, Address => Address.AddressId, (Client, Address) => new { Client, Address });
-            var client = joinedClientAndAddressTable.Single(a => a.Address.AddressId == a.Client.AddressId);
+            var client = joinedClientAndAddressTable.SingleOrDefault(a => a.Address.AddressId == a.Client.AddressId);
             var clientAddress = client.Address;
 
             Client newClient = new Client()
@@ -436,7 +431,7 @@ namespace HumaneSociety
         public static void UpdateClient(Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var clientToUpdate = db.Clients.Distinct().Single(Client => Client.ClientId == client.ClientId);
+            var clientToUpdate = db.Clients.Distinct().SingleOrDefault(Client => Client.ClientId == client.ClientId);
             clientToUpdate = client;
             db.SubmitChanges();
         }
@@ -595,38 +590,17 @@ namespace HumaneSociety
 
         private static bool ValidateSpeciesInput(int result, HumaneSocietyDataContext db)
         {
-            if (db.Species.SingleOrDefault(s => s.SpeciesId == result) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return db.Species.SingleOrDefault(s => s.SpeciesId == result) != null;
         }
 
         private static bool ValidateDietPlanInput(int result, HumaneSocietyDataContext db)
         {
-            if (db.DietPlans.SingleOrDefault(d => d.DietPlanId == result) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return db.DietPlans.SingleOrDefault(d => d.DietPlanId == result) != null;
         }
 
         private static bool ValidateEmployeeInput(int result, HumaneSocietyDataContext db)
         {
-            if (db.Employees.SingleOrDefault(e => e.EmployeeId == result) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return db.Employees.SingleOrDefault(e => e.EmployeeId == result) != null;
         }
     }
 }
