@@ -241,9 +241,40 @@ namespace HumaneSociety
             }
             if (updates.ContainsKey(9))
             {
-                //room
+                UpdateRoom(animalToUpdate, db, updates[9]);
+                
             }
             db.SubmitChanges();
+        }
+
+        private static void UpdateRoom(Animal animalToUpdate, HumaneSocietyDataContext db, string userEnteredNumber)
+        {
+            int possibleRoomNumber;
+            bool isInt = Int32.TryParse(userEnteredNumber, out possibleRoomNumber);
+            Room roomToClear;
+            Room roomToPopulate;
+            if (isInt == true)
+            {
+                roomToClear = db.Rooms.SingleOrDefault(r => r.AnimalId == animalToUpdate.AnimalId);
+                if (roomToClear != null)
+                {
+                    roomToClear.AnimalId = null;
+                }
+                roomToPopulate = db.Rooms.SingleOrDefault(r => r.RoomNumber == possibleRoomNumber);
+                if (roomToPopulate != null)
+                {
+                    roomToPopulate.AnimalId = animalToUpdate.AnimalId;
+                }
+                else
+                {
+                    throw new Exception("Room number to move animal to was not found.");
+                }
+
+            }
+            else
+            {
+                throw new Exception("Room number to move animal to was not a valid number");
+            }
         }
 
         public static void RemoveAnimal(Animal animal)
