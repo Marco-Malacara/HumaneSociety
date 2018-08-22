@@ -384,7 +384,11 @@ namespace HumaneSociety
 
         private static void UpdateEmployee(Employee employee)
         {
-            
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var employeeToUpdate = db.Employees.Distinct().Single(user => user.EmployeeNumber == employee.EmployeeNumber);
+
+            employeeToUpdate = employee;
+            db.SubmitChanges();
         }
 
         private static void DeleteEmployee(Employee employee)
