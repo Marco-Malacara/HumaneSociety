@@ -8,6 +8,7 @@ namespace HumaneSociety
 {
     public static class Query 
     {
+        public delegate void EmployeeToVoidFunction(Employee employee);
 
         public static void UpdateAdoption(bool isApproved, Adoption adoption)
         {
@@ -351,7 +352,7 @@ namespace HumaneSociety
 
         public static void RunEmployeeQueries(Employee employee, string input)
         {
-            Action<Employee> runQueries;
+            EmployeeToVoidFunction runQueries;
 
             switch (input)
             {
@@ -359,19 +360,45 @@ namespace HumaneSociety
                     runQueries = AddUsernameAndPassword;
                     break;
                 case "read":
+                    runQueries = ReadEmployee;
                     break;
                 case "update":
+                    runQueries = UpdateEmployee;
                     break;
                 case "delete":
+                    runQueries = DeleteEmployee;
                     break;
+                default:
+                    throw new ApplicationException("Application error occured.");
             }
             runQueries(employee);
         }
 
-        public static void ReadEmployee()
+        private static void ReadEmployee(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var displayData = db.Employees.Distinct().Single(read => read.EmployeeNumber == employee.EmployeeNumber);
+            Console.WriteLine(displayData.FirstName);
+            Console.WriteLine(displayData.LastName);
+            Console.WriteLine(displayData.UserName);
+            Console.WriteLine(displayData.Password);
+            Console.WriteLine(displayData.Email);
+            Console.WriteLine(displayData.Animals);
+            Console.WriteLine(displayData.EmployeeId);
+            Console.WriteLine(displayData.EmployeeNumber);
+            displayData
+        }
+
+        private static void UpdateEmployee(Employee employee)
         {
 
         }
+
+        private static void DeleteEmployee(Employee employee)
+        {
+
+        }
+
         public static IQueryable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
