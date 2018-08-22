@@ -369,5 +369,11 @@ namespace HumaneSociety
             clientAnimal.Select(a => a.Adoption.AdoptionFee = 75);
             db.SubmitChanges();
         }
+        public static IQueryable<Client> RetrieveClients()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var clients = db.Clients.Distinct().Select(Client => Client);
+            return clients;
+        }
     }
 }
