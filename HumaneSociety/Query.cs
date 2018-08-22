@@ -397,6 +397,13 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
+        public static Room GetRoom(int animalId)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var animalRoom = db.Rooms.SingleOrDefault(r => r.AnimalId == animalId);
+            return animalRoom;
+        }
+
         public static void ReadCSVFile(string file)
         {
             IEnumerable<string> stringOfCSV = File.ReadLines(file);
