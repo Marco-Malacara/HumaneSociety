@@ -116,34 +116,23 @@ namespace HumaneSociety
 
         private void RunSearch()
         {
-            Console.Clear();
-            Dictionary<int, string> searchParameters = new Dictionary<int, string>();
-            List<string> options = new List<string>() { "Select Item(s) to Search For: (Enter number and choose finished when finished)", "1. Species", "2. Name", "3. Age", "4. Demeanor", "5. Kid friendly", "6. Pet friendly", "7. Weight", "8. Finished" };
-            UserInterface.DisplayUserOptions(options);
-            string input = UserInterface.GetUserInput();
-            if (input.ToLower() == "9" || input.ToLower() == "finished")
-            {
-                var animals = Query.SearchForAnimalByMultipleTraits(searchParameters).ToList();
-                if (animals.Count > 1)
-                {
-                    UserInterface.DisplayUserOptions("Several animals found");
-                    UserInterface.DisplayAnimals(animals);
-                }
-                else if (animals.Count == 0)
-                {
-                    UserInterface.DisplayUserOptions("No animals found please try another search");
-                }
-                else
-                {
-                    UserInterface.DisplayAnimalInfo(animals[0]);
-                }
-            }
-            else
-            {
-                searchParameters = UserInterface.EnterSearchCriteria(searchParameters, input);
-            }
-            UserInterface.DisplayUserOptions("Press enter to continue");
-            Console.ReadLine();
+           Dictionary <int, string> searchParameters =  UserInterface.GetAnimalCriteria();
+           var animals = Query.SearchForAnimalByMultipleTraits(searchParameters).ToList();
+           if (animals.Count > 1)
+           {
+                UserInterface.DisplayUserOptions("Several animals found");
+                UserInterface.DisplayAnimals(animals);
+           }
+           else if (animals.Count == 0)
+           {
+                UserInterface.DisplayUserOptions("No animals found please try another search");
+           }
+           else
+           {
+               UserInterface.DisplayAnimalInfo(animals[0]);
+           }
+           UserInterface.DisplayUserOptions("Press enter to continue");
+           Console.ReadLine();
         }
 
         private void CheckIfAccountComplete()
