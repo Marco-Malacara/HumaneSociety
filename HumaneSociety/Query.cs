@@ -417,16 +417,11 @@ namespace HumaneSociety
                 Password = password,
                 Email = email
             };
-            db.Clients.InsertOnSubmit(newClient);
-            db.SubmitChanges();
-
-            var joinedClientAndAddressTable = db.Clients.AsEnumerable().Distinct().Join(db.Addresses.AsEnumerable().Distinct(), Client => Client.AddressId, Address => Address.AddressId, (Client, Address) => new { Client, Address });
-            var client = joinedClientAndAddressTable.SingleOrDefault(a => newClient.ClientId == a.Client.ClientId);
-            var clientAddress = client.Address;
-            newClient.Address = clientAddress;
             newClient.Address.AddressLine1 = streetAddress;
             newClient.Address.Zipcode = zipCode;
             newClient.Address.USStateId = stateId;
+            db.Clients.InsertOnSubmit(newClient);
+            db.SubmitChanges();
             
         }
         public static void UpdateClient(Client client)
