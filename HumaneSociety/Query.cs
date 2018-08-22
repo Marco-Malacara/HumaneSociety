@@ -496,15 +496,15 @@ namespace HumaneSociety
         public static void ReadCSVFile(string file)
         {
             IEnumerable<string> stringOfCSV = File.ReadLines(file);
-            var results = stringOfCSV.Select(s => s.Split(',').Skip(1));
+            var results = stringOfCSV.Select(s => s.Split(',').Skip(1).ToList());
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            foreach (string[] s in results)
+            foreach (List<string> s in results)
             {
                 
                 bool rowIsValid = true;
-                for (int i = 0; i < s.Length; i++)
+                for (int i = 0; i < s.Count; i++)
                 {
-                    bool columnIsValid = ValidateFileInput(i, s[i], db);
+                    bool columnIsValid = ValidateFileInput(i, s[i].Trim(), db);
                     if (columnIsValid == false)
                     {
                         rowIsValid = false;
@@ -515,7 +515,7 @@ namespace HumaneSociety
                 if (rowIsValid == true)
                 {
                     Animal animal = new Animal();
-                    for (int j = 0; j < s.Length; j++)
+                    for (int j = 0; j < s.Count; j++)
                     {
                         InsertColumnToNewAnimal(animal, db, j, s);
                     }
@@ -525,11 +525,15 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-        public static void InsertColumnToNewAnimal(Animal animal, HumaneSocietyDataContext db, int j, string[] s)
+        public static void InsertColumnToNewAnimal(Animal animal, HumaneSocietyDataContext db, int j, List<string> s)
         {
-            if (j == 0)
+            if (s[j].Trim().Replace("\"","") == "null")
             {
-                animal.Name = s[j];
+                
+            }
+            else if (j == 0)
+            {
+                animal.Name = s[j].Trim().Replace("\"","");
             } 
             else if (j == 1)
             {
@@ -547,34 +551,48 @@ namespace HumaneSociety
             {
                 animal.DietPlanId = Convert.ToInt32(s[j]);
             }
-            else if (j == 5)
-            {
-                animal.Demeanor = s[j];
-            }
             else if (j == 6)
             {
-                animal.KidFriendly = Convert.ToBoolean(s[j]);
+                animal.Demeanor = s[j].Trim().Replace("\"", "");
             }
             else if (j == 7)
             {
-                animal.PetFriendly = Convert.ToBoolean(s[j]);
+                if (s[j].Trim() == "1")
+                {
+                    animal.KidFriendly = true;
+                }
+                else if (s[j].Trim() == "0")
+                {
+                    animal.KidFriendly = false;
+                }
             }
-            else  if (j == 8)
+            else if (j == 8)
             {
-                animal.Gender = s[j];
+                if (s[j].Trim() == "1")
+                {
+                    animal.PetFriendly = true;
+                } 
+                else if (s[j].Trim() == "0")
+                {
+                    animal.PetFriendly = false;
+                }
             }
-            else if (j == 9)
+            else  if (j == 9)
             {
-                if (s[j] == "not adopted")
+                animal.Gender = s[j].Trim().Replace("\"", "");
+            }
+            else if (j == 10)
+            {
+                if (s[j].Trim().Replace("\"", "") == "not adopted")
                 {
                     animal.AdoptionStatus = "available";
                 }
                 else
                 {
-                    animal.AdoptionStatus = s[j];
+                    animal.AdoptionStatus = s[j].Trim().Replace("\"", "");
                 }
             }
-            else if (j == 10)
+            else if (j == 11)
             {
                 animal.EmployeeId = Convert.ToInt32(s[j]);
             }
@@ -583,9 +601,9 @@ namespace HumaneSociety
 
         private static bool ValidateFileInput(int i, string columnValue, HumaneSocietyDataContext db)
         {
-            if (i == 1 || i == 2 || i == 3 || i == 4 || i == 10)
+            if (i == 1 || i == 2 || i == 3 || i == 4 || i == 11)
             {
-                if (columnValue == null)
+                if (columnValue == "null")
                 {
                     return true;
                 }
@@ -603,7 +621,7 @@ namespace HumaneSociety
                         bool isValidDiet = ValidateDietPlanInput(result, db);
                         return isValidDiet;
                     }
-                    else if (isNumber == true && i == 10)
+                    else if (isNumber == true && i == 11)
                     {
                         bool isValidEmployee = ValidateEmployeeInput(result, db);
                         return isValidEmployee;
@@ -614,16 +632,22 @@ namespace HumaneSociety
                     }
                 }
             }
-            else if (i == 6 || i == 7)
+            else if (i == 7 || i == 8)
             {
-                if (columnValue == null)
+                if (columnValue == "null")
                 {
                     return true;
                 }
                 else
                 {
-                    bool isBool = bool.TryParse(columnValue, out isBool);
-                    return isBool;
+                    if (columnValue == "1" || columnValue == "0")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             else
