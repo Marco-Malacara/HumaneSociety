@@ -421,12 +421,14 @@ namespace HumaneSociety
                 Password = password,
                 Email = email
             };
-            newClient.Address.AddressLine1 = streetAddress;
-            newClient.Address.Zipcode = zipCode;
-            newClient.Address.USStateId = stateId;
+            newClient.Address = new Address()
+            {
+                AddressLine1 = streetAddress,
+                Zipcode = zipCode,
+                USStateId = stateId
+            };
             db.Clients.InsertOnSubmit(newClient);
             db.SubmitChanges();
-            
         }
         public static void UpdateClient(Client client)
         {
