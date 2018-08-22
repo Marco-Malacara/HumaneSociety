@@ -318,30 +318,6 @@ namespace HumaneSociety
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
-
-        public static void RunEmployeeQueries(Employee employee, string input)
-        {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            if (input == "create")
-            {
-                db.Employees.InsertOnSubmit(employee);
-                db.SubmitChanges();
-            }
-            else if (input == "read")
-            {
-                var readQuery = db.Employees.Select(read => read).Where(read => read.EmployeeNumber == employee.EmployeeNumber);
-                
-            }
-            else if (input == "update")
-            {
-                // TODO!
-            }
-            else if (input == "delete")
-            {
-                //TODO!
-            }
-        }
-
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -361,5 +337,18 @@ namespace HumaneSociety
             var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
             return (Animal)specifiedAnimal;
         }
+
+        public static void Adopt(Animal animal, Client client)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var joinedAnimalAndAdoptionTable = db.Adoptions.AsEnumerable().Distinct().Join(db.Animals.AsEnumerable(), Adoption => Adoption.AnimalId, Animal => Animal.AnimalId, (Adoption, Animal) => new { Adoption, Animal });
+            var clientAnimal = joinedAnimalAndAdoptionTable.Select(a => a).Where(a => a.Animal.AnimalId == animal.AnimalId && a.Adoption.ClientId == client.ClientId);
+            clientAnimal.Select(a => a.Animal.AdoptionStatus = "pending");
+            clientAnimal.Select(a => a.Adoption.ApprovalStatus = "pending");
+            clientAnimal.Select(a => a.Adoption.AdoptionFee = 75);
+            db.SubmitChanges();
+        }
+
+        public delegate IQueryable<Employee> 
     }
 }
