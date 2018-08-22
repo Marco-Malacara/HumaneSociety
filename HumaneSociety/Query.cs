@@ -404,14 +404,16 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var displayData = db.Employees.Distinct().Single(read => read.EmployeeNumber == employee.EmployeeNumber);
-            Console.WriteLine(displayData.FirstName);
-            Console.WriteLine(displayData.LastName);
-            Console.WriteLine(displayData.UserName);
-            Console.WriteLine(displayData.Password);
-            Console.WriteLine(displayData.Email);
-            Console.WriteLine(displayData.Animals);
-            Console.WriteLine(displayData.EmployeeId);
-            Console.WriteLine(displayData.EmployeeNumber);
+            Console.WriteLine("Firstname: " + displayData.FirstName);
+            Console.WriteLine("Lastname: " + displayData.LastName);
+            Console.WriteLine("Username: " + displayData.UserName);
+            Console.WriteLine("Password: " + displayData.Password);
+            Console.WriteLine("Email: " + displayData.Email);
+            Console.WriteLine("Animals: " + displayData.Animals);
+            Console.WriteLine("Emloyee I.D. " + displayData.EmployeeId);
+            Console.WriteLine("Employee Number: " + displayData.EmployeeNumber);
+            Console.WriteLine("Press [ENTER] to continue.");
+            Console.ReadLine();
         }
 
         private static void UpdateEmployee(Employee employee)
