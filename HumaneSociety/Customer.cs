@@ -116,23 +116,23 @@ namespace HumaneSociety
 
         private void RunSearch()
         {
-            Console.Clear();            
-            var animals = Query.SearchForAnimalByMultipleTraits().ToList();
-            if (animals.Count > 1)
-            {
+           Dictionary <int, string> searchParameters =  UserInterface.GetAnimalCriteria();
+           var animals = Query.SearchForAnimalByMultipleTraits(searchParameters).ToList();
+           if (animals.Count > 1)
+           {
                 UserInterface.DisplayUserOptions("Several animals found");
                 UserInterface.DisplayAnimals(animals);
-            }
-            else if(animals.Count == 0)
-            {
+           }
+           else if (animals.Count == 0)
+           {
                 UserInterface.DisplayUserOptions("No animals found please try another search");
-            }
-            else
-            {
-                UserInterface.DisplayAnimalInfo(animals[0]);
-            }
-            UserInterface.DisplayUserOptions("Press enter to continue");
-            Console.ReadLine();
+           }
+           else
+           {
+               UserInterface.DisplayAnimalInfo(animals[0]);
+           }
+           UserInterface.DisplayUserOptions("Press enter to continue");
+           Console.ReadLine();
         }
 
         private void CheckIfAccountComplete()
