@@ -253,8 +253,6 @@ namespace HumaneSociety
         {
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
-
-<<<<<<< HEAD
         public static void RunEmployeeQueries(Employee employee, string input)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -275,7 +273,7 @@ namespace HumaneSociety
             {
                 //TODO!
             }
-=======
+        }
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -294,7 +292,17 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
             return (Animal)specifiedAnimal;
->>>>>>> ab92112cdee5a34f1880e4a143f15c8435880993
+        }
+
+        public static void Adopt(Animal animal, Client client)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var joinedAnimalAndAdoptionTable = db.Adoptions.AsEnumerable().Distinct().Join(db.Animals.AsEnumerable(), Adoption => Adoption.AnimalId, Animal => Animal.AnimalId, (Adoption, Animal) => new { Adoption, Animal });
+            var clientAnimal = joinedAnimalAndAdoptionTable.Select(a => a).Where(a => a.Animal.AnimalId == animal.AnimalId && a.Adoption.ClientId == client.ClientId);
+            clientAnimal.Select(a => a.Animal.AdoptionStatus = "pending");
+            clientAnimal.Select(a => a.Adoption.ApprovalStatus = "pending");
+            clientAnimal.Select(a => a.Adoption.AdoptionFee = 75);
+            db.SubmitChanges();
         }
     }
 }
