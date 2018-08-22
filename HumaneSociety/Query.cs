@@ -349,6 +349,23 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-        public delegate IQueryable<Employee> 
+        public static void RunEmployeeQueries(Employee employee, string input)
+        {
+            Action<Employee> runQueries;
+
+            switch (input)
+            {
+                case "create":
+                    runQueries = AddUsernameAndPassword;
+                    AddUsernameAndPassword(employee);
+                    break;
+                case "read":
+                    break;
+                case "update":
+                    break;
+                case "delete":
+                    break;
+            }
+        }
     }
 }
