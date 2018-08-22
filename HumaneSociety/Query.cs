@@ -425,8 +425,12 @@ namespace HumaneSociety
         private static void DeleteEmployee(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            db.Employees.DeleteOnSubmit(employee);
-            db.SubmitChanges();
+            var employeeToDelete = db.Employees.SingleOrDefault(user => user.EmployeeNumber == employee.EmployeeNumber);
+            if (employeeToDelete != null)
+            {
+                db.Employees.DeleteOnSubmit(employeeToDelete);
+                db.SubmitChanges();
+            }
         }
 
         public static IEnumerable<Client> RetrieveClients()
@@ -444,22 +448,20 @@ namespace HumaneSociety
         public static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateId)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var joinedClientAndAddressTable = db.Clients.AsEnumerable().Distinct().Join(db.Addresses.AsEnumerable().Distinct(), Client => Client.AddressId, Address => Address.AddressId, (Client, Address) => new { Client, Address });
-            var client = joinedClientAndAddressTable.SingleOrDefault(a => a.Address.AddressId == a.Client.AddressId);
-            var clientAddress = client.Address;
-
             Client newClient = new Client()
             {
                 FirstName = firstName,
                 LastName = lastName,
                 UserName = username,
                 Password = password,
-                Email = email,
-                Address = clientAddress,
+                Email = email
             };
-            newClient.Address.AddressLine1 = streetAddress;
-            newClient.Address.Zipcode = zipCode;
-            newClient.Address.USStateId = stateId;
+            newClient.Address = new Address()
+            {
+                AddressLine1 = streetAddress,
+                Zipcode = zipCode,
+                USStateId = stateId
+            };
             db.Clients.InsertOnSubmit(newClient);
             db.SubmitChanges();
         }
