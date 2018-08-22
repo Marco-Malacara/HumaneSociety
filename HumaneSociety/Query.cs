@@ -427,6 +427,26 @@ namespace HumaneSociety
                 updateClientDelegate = UpdateLastName;
                 updateClientDelegate(client, clientToUpdate);
             }
+            if (clientToUpdate.Address.AddressLine1 != client.Address.AddressLine1)
+            {
+                updateClientDelegate = UpdateAddress;
+                updateClientDelegate(client, clientToUpdate);
+            }
+            if (clientToUpdate.HomeSquareFootage != client.HomeSquareFootage)
+            {
+                updateClientDelegate = UpdateHomeSize;
+                updateClientDelegate(client, clientToUpdate);
+            }
+            if (clientToUpdate.Income != client.Income)
+            {
+                updateClientDelegate = UpdateIncome;
+                updateClientDelegate(client, clientToUpdate);
+            }
+            if (clientToUpdate.NumberOfKids != client.NumberOfKids)
+            {
+                updateClientDelegate = UpdateKids;
+                updateClientDelegate(client, clientToUpdate);
+            }
 
             db.SubmitChanges();
         }
@@ -445,6 +465,16 @@ namespace HumaneSociety
             clientToUpdate.Email = client.Email;
 
         }
+        private static void UpdateHomeSize(Client client, Client clientToUpdate)
+        {
+            clientToUpdate.HomeSquareFootage = client.HomeSquareFootage;
+
+        }
+        private static void UpdateIncome(Client client, Client clientToUpdate)
+        {
+            clientToUpdate.Income = client.Income;
+
+        }
         private static void UpdateFirstName(Client client, Client clientToUpdate)
         {
             clientToUpdate.FirstName = client.FirstName;
@@ -452,6 +482,14 @@ namespace HumaneSociety
         private static void UpdateLastName(Client client, Client clientToUpdate)
         {
             clientToUpdate.LastName = client.LastName;
+        }
+        private static void UpdateAddress(Client client, Client clientToUpdate)
+        {
+            clientToUpdate.Address.AddressLine1 = client.Address.AddressLine1;
+        }
+        private static void UpdateKids(Client client, Client clientToUpdate)
+        {
+            clientToUpdate.NumberOfKids = client.NumberOfKids;
         }
 
         public static Room GetRoom(int animalId)
