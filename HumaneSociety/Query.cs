@@ -52,7 +52,7 @@ namespace HumaneSociety
         public static IEnumerable<AnimalShot> GetShots(Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var shots = db.AnimalShots.Join(db.Animals.AsEnumerable(), AnimalShot => AnimalShot.AnimalId, Animal => Animal.AnimalId, (AnimalShot, Animal) => new { AnimalShot, Animal }).Select(a => a).Where(a => a.AnimalShot.AnimalId == a.Animal.AnimalId).Cast<AnimalShot>();
+            var shots = db.AnimalShots.Where(AnimalShot => AnimalShot.AnimalId == animal.AnimalId);
             return shots;
         }
 
@@ -464,6 +464,7 @@ namespace HumaneSociety
                 USStateId = stateId
             };
             db.Clients.InsertOnSubmit(newClient);
+            db.Addresses.InsertOnSubmit(newClient.Address);
             db.SubmitChanges();
         }
         public static void UpdateClient(Client client)
