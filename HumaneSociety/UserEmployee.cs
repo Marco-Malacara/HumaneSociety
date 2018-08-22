@@ -219,35 +219,28 @@ namespace HumaneSociety
         private void RemoveAnimal()
 
         {
-            Console.Clear();
-            Dictionary<int, string> searchParameters = new Dictionary<int, string>();
-            List<string> options = new List<string>() { "Select Item(s) to Search By: (Enter number and choose finished when finished)", "1. Species", "2. Name", "3. Age", "4. Demeanor", "5. Kid friendly", "6. Pet friendly", "7. Weight", "8. Finished" };
-            UserInterface.DisplayUserOptions(options);
-            string input = UserInterface.GetUserInput();
-            if (input.ToLower() == "9" || input.ToLower() == "finished")
+            Dictionary<int, string> searchParameters = UserInterface.GetAnimalCriteria();
+            var animals = Query.SearchForAnimalByMultipleTraits(searchParameters).ToList();
+            if (animals.Count > 1)
             {
-                var animals = Query.SearchForAnimalByMultipleTraits(searchParameters).ToList();
-                if (animals.Count > 1)
+                UserInterface.DisplayUserOptions("Several animals found please refine your search.");
+                UserInterface.DisplayAnimals(animals);
+                UserInterface.DisplayUserOptions("Press enter to continue");
+                Console.ReadLine();
+                return;
+            }
+            else if (animals.Count < 1)
+            {
+                UserInterface.DisplayUserOptions("Animal not found please use different search criteria");
+                return;
+            }
+            else
+            {
+                var animal = animals[0];
+                List<string> selection = new List<string>() { "Animal found:", animal.Name, animal.Specy.Name, "would you like to delete?" };
+                if ((bool)UserInterface.GetBitData(selection))
                 {
-                    UserInterface.DisplayUserOptions("Several animals found please refine your search.");
-                    UserInterface.DisplayAnimals(animals);
-                    UserInterface.DisplayUserOptions("Press enter to continue");
-                    Console.ReadLine();
-                    return;
-                }
-                else if (animals.Count < 1)
-                {
-                    UserInterface.DisplayUserOptions("Animal not found please use different search criteria");
-                    return;
-                }
-                else
-                {
-                    var animal = animals[0];
-                    List<string> selection = new List<string>() { "Animal found:", animal.Name, animal.Specy.Name, "would you like to delete?" };
-                    if ((bool)UserInterface.GetBitData(selection))
-                    {
-                        Query.RemoveAnimal(animal);
-                    }
+                    Query.RemoveAnimal(animal);
                 }
             }
         }
