@@ -357,7 +357,6 @@ namespace HumaneSociety
             {
                 case "create":
                     runQueries = AddUsernameAndPassword;
-                    AddUsernameAndPassword(employee);
                     break;
                 case "read":
                     break;
@@ -366,6 +365,12 @@ namespace HumaneSociety
                 case "delete":
                     break;
             }
+            runQueries(employee);
+        }
+
+        public static void ReadEmployee()
+        {
+
         }
         public static IQueryable<Client> RetrieveClients()
         {
