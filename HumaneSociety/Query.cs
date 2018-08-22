@@ -239,6 +239,10 @@ namespace HumaneSociety
             {
                 throw new Exception("Id cannot be changed.");
             }
+            if (updates.ContainsKey(9))
+            {
+                //room
+            }
             db.SubmitChanges();
         }
 
