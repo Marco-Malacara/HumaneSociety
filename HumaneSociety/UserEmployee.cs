@@ -96,8 +96,8 @@ namespace HumaneSociety
 
         private void CheckAnimalStatus()
         {
-            Console.Clear();            
-            var animals = Query.SearchForAnimalByMultipleTraits().ToList();
+            Dictionary<int, string> searchParameters = UserInterface.GetAnimalCriteria();
+            var animals = Query.SearchForAnimalByMultipleTraits(searchParameters).ToList();
             if(animals.Count > 1)
             {
                 UserInterface.DisplayUserOptions("Several animals found");
@@ -193,7 +193,7 @@ namespace HumaneSociety
             }
             else
             {
-                updates = UserInterface.EnterSearchCriteria(updates, input);
+               
             }
         }
 
@@ -217,8 +217,10 @@ namespace HumaneSociety
         }       
 
         private void RemoveAnimal()
-        {            
-            var animals = Query.SearchForAnimalByMultipleTraits().ToList();
+
+        {
+            Dictionary<int, string> searchParameters = UserInterface.GetAnimalCriteria();
+            var animals = Query.SearchForAnimalByMultipleTraits(searchParameters).ToList();
             if (animals.Count > 1)
             {
                 UserInterface.DisplayUserOptions("Several animals found please refine your search.");
@@ -232,11 +234,14 @@ namespace HumaneSociety
                 UserInterface.DisplayUserOptions("Animal not found please use different search criteria");
                 return;
             }
-            var animal = animals[0];
-            List<string> options = new List<string>() { "Animal found:", animal.Name, animal.Specy.Name, "would you like to delete?" };
-            if ((bool)UserInterface.GetBitData(options))
+            else
             {
-                Query.RemoveAnimal(animal);
+                var animal = animals[0];
+                List<string> selection = new List<string>() { "Animal found:", animal.Name, animal.Specy.Name, "would you like to delete?" };
+                if ((bool)UserInterface.GetBitData(selection))
+                {
+                    Query.RemoveAnimal(animal);
+                }
             }
         }
         private void AddAnimal()

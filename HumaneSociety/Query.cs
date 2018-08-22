@@ -53,9 +53,73 @@ namespace HumaneSociety
             return shots;
         }
 
-        public static IEnumerable<Animal> SearchForAnimalByMultipleTraits()
+        public static IEnumerable<Animal> SearchForAnimalByMultipleTraits(Dictionary<int,string> searchParameters)
         {
-            
+
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+
+            var animals = from data in db.Animals select data;
+
+            if (searchParameters.ContainsKey(1))
+            {
+                animals = (from animal in animals where animal.Specy.Name == searchParameters[1] select animal);
+            }
+            if (searchParameters.ContainsKey(2))
+            {
+                animals = (from animal in animals where animal.Name == searchParameters[2] select animal);
+            }
+            if (searchParameters.ContainsKey(3))
+            {
+                animals = (from animal in animals where animal.Age == int.Parse(searchParameters[3]) select animal);
+            }
+            if (searchParameters.ContainsKey(4))
+            {
+                animals = (from animal in animals where animal.Demeanor == searchParameters[4] select animal);
+            }
+            if (searchParameters.ContainsKey(5))
+            {
+                bool parameter = false;
+                if (searchParameters[5].ToLower().Trim() == "true" || searchParameters[5].ToLower().Trim() == "yes" || searchParameters[5] == "1")
+                {
+                    parameter = true;
+                }
+                else if (searchParameters[5].ToLower().Trim() == "false" || searchParameters[5].ToLower().Trim() == "no" || searchParameters[5] == "0")
+                {
+                    parameter = false;
+                }
+                else
+                {
+                    //error handling
+                }
+                animals = (from animal in animals where animal.KidFriendly == parameter select animal);
+            }
+            if (searchParameters.ContainsKey(6))
+            {
+                bool parameter = false;
+                if (searchParameters[6].ToLower().Trim() == "true" || searchParameters[6].ToLower().Trim() == "yes" || searchParameters[6] == "1")
+                {
+                    parameter = true;
+                }
+                else if (searchParameters[6].ToLower().Trim() == "false" || searchParameters[6].ToLower().Trim() == "no" || searchParameters[6] == "0")
+                {
+                    parameter = false;
+                }
+                else
+                {
+                    //error handling
+                }
+                animals = (from animal in animals where animal.PetFriendly == parameter select animal);
+            }
+            if (searchParameters.ContainsKey(7))
+            {
+                animals = (from animal in animals where animal.Weight == int.Parse(searchParameters[7]) select animal);
+            }
+            if (searchParameters.ContainsKey(8))
+            {
+                animals = (from animal in animals where animal.AnimalId == int.Parse(searchParameters[8]) select animal);
+            }
+            return animals;
+
         }
 
         public static Employee RetrieveEmployeeUser(string email, int employeeNumber)
@@ -254,6 +318,7 @@ namespace HumaneSociety
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
+
         public static void RunEmployeeQueries(Employee employee, string input)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -276,6 +341,7 @@ namespace HumaneSociety
                 //TODO!
             }
         }
+
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
