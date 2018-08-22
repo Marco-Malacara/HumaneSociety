@@ -214,6 +214,7 @@ namespace HumaneSociety
                     searchParameters.Add(8, UserInterface.GetIntegerData("ID", "the animal's").ToString());
                     return searchParameters;
                 case "9":
+                    Console.WriteLine("Note: check the animal status to find their current room number.");
                     searchParameters.Add(9, UserInterface.GetIntegerData("room", "the animal's").ToString());
                     return searchParameters;
                 default:
