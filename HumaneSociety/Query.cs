@@ -9,7 +9,9 @@ namespace HumaneSociety
 {
     public static class Query 
     {
-        
+
+        public delegate void EmployeeToVoidFunction(Employee employee);
+
         public static void UpdateAdoption(bool isApproved, Adoption adoption)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -312,27 +314,6 @@ namespace HumaneSociety
             return database.DietPlans.Distinct().SingleOrDefault(Plan => Plan.Name.ToLower() == stringToCompare.ToLower()) != null;
         }
 
-        public static void RunEmployeeQueries(Employee employee, string input)
-        {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            if (input == "create")
-            {
-                db.Employees.InsertOnSubmit(employee);
-                db.SubmitChanges();
-            }
-            else if (input == "read")
-            {
-                // TO DO!
-            }
-            else if (input == "update")
-            {
-                // TODO!
-            }
-            else if (input == "delete")
-            {
-                //TODO!
-            }
-        }
         public static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -363,6 +344,61 @@ namespace HumaneSociety
             clientAnimal.Adoption.AdoptionFee = 75;
             db.SubmitChanges();
         }
+
+        public static void RunEmployeeQueries(Employee employee, string input)
+        {
+            EmployeeToVoidFunction runQueries;
+
+            switch (input)
+            {
+                case "create":
+                    runQueries = AddUsernameAndPassword;
+                    break;
+                case "read":
+                    runQueries = ReadEmployee;
+                    break;
+                case "update":
+                    runQueries = UpdateEmployee;
+                    break;
+                case "delete":
+                    runQueries = DeleteEmployee;
+                    break;
+                default:
+                    throw new ApplicationException("Application error occured.");
+            }
+            runQueries(employee);
+        }
+
+        private static void ReadEmployee(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var displayData = db.Employees.Distinct().Single(read => read.EmployeeNumber == employee.EmployeeNumber);
+            Console.WriteLine(displayData.FirstName);
+            Console.WriteLine(displayData.LastName);
+            Console.WriteLine(displayData.UserName);
+            Console.WriteLine(displayData.Password);
+            Console.WriteLine(displayData.Email);
+            Console.WriteLine(displayData.Animals);
+            Console.WriteLine(displayData.EmployeeId);
+            Console.WriteLine(displayData.EmployeeNumber);
+        }
+
+        private static void UpdateEmployee(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var employeeToUpdate = db.Employees.Distinct().Single(user => user.EmployeeNumber == employee.EmployeeNumber);
+
+            employeeToUpdate = employee;
+            db.SubmitChanges();
+        }
+
+        private static void DeleteEmployee(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Employees.DeleteOnSubmit(employee);
+            db.SubmitChanges();
+        }
+
         public static IQueryable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -411,6 +447,12 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var animalRoom = db.Rooms.SingleOrDefault(r => r.AnimalId == animalId);
             return animalRoom;
+        }
+
+        public static bool CheckIfCSVFileValid(string file)
+        {
+            bool fileDoesExist = File.Exists(file);
+            return fileDoesExist;
         }
 
         public static void ReadCSVFile(string file)
