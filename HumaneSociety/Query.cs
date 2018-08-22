@@ -409,24 +409,25 @@ namespace HumaneSociety
         public static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateId)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var joinedClientAndAddressTable = db.Clients.AsEnumerable().Distinct().Join(db.Addresses.AsEnumerable().Distinct(), Client => Client.AddressId, Address => Address.AddressId, (Client, Address) => new { Client, Address });
-            var client = joinedClientAndAddressTable.SingleOrDefault(a => a.Address.AddressId == a.Client.AddressId);
-            var clientAddress = client.Address;
-
             Client newClient = new Client()
             {
                 FirstName = firstName,
                 LastName = lastName,
                 UserName = username,
                 Password = password,
-                Email = email,
-                Address = clientAddress,
+                Email = email
             };
+            db.Clients.InsertOnSubmit(newClient);
+            db.SubmitChanges();
+
+            var joinedClientAndAddressTable = db.Clients.AsEnumerable().Distinct().Join(db.Addresses.AsEnumerable().Distinct(), Client => Client.AddressId, Address => Address.AddressId, (Client, Address) => new { Client, Address });
+            var client = joinedClientAndAddressTable.SingleOrDefault(a => newClient.ClientId == a.Client.ClientId);
+            var clientAddress = client.Address;
+            newClient.Address = clientAddress;
             newClient.Address.AddressLine1 = streetAddress;
             newClient.Address.Zipcode = zipCode;
             newClient.Address.USStateId = stateId;
-            db.Clients.InsertOnSubmit(newClient);
-            db.SubmitChanges();
+            
         }
         public static void UpdateClient(Client client)
         {
