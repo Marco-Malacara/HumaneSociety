@@ -397,8 +397,8 @@ namespace HumaneSociety
         public static IEnumerable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var clients = db.Clients.Select(Client => Client);
-            return clients;
+            var currentClients = db.Clients.Select(Client => Client);
+            return currentClients;
         }
         public static IQueryable<USState> GetStates()
         {
@@ -410,7 +410,7 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var joinedClientAndAddressTable = db.Clients.AsEnumerable().Distinct().Join(db.Addresses.AsEnumerable().Distinct(), Client => Client.AddressId, Address => Address.AddressId, (Client, Address) => new { Client, Address });
-            var client = joinedClientAndAddressTable.Single(a => a.Address.AddressId == a.Client.AddressId);
+            var client = joinedClientAndAddressTable.SingleOrDefault(a => a.Address.AddressId == a.Client.AddressId);
             var clientAddress = client.Address;
 
             Client newClient = new Client()
