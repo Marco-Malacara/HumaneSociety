@@ -434,6 +434,12 @@ namespace HumaneSociety
             return animalRoom;
         }
 
+        public static bool CheckIfCSVFileValid(string file)
+        {
+            bool fileDoesExist = File.Exists(file);
+            return fileDoesExist;
+        }
+
         public static void ReadCSVFile(string file)
         {
             IEnumerable<string> stringOfCSV = File.ReadLines(file);
