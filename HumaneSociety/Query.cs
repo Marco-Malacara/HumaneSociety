@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -187,14 +188,7 @@ namespace HumaneSociety
             }
             if (updates.ContainsKey(4))
             {
-                if (updates[4].ToLower().Trim() == "aggressive" || updates[4].ToLower().Trim() == "passive" || updates[4].ToLower().Trim() == "friendly")
-                {
-                    animalToUpdate.Demeanor = updates[4].ToLower().Trim();
-                }
-                else
-                {
-                    throw new Exception("Demeanor was not updated because the new demeanor entered was not valid.");
-                }
+                animalToUpdate.Demeanor = updates[4].ToLower().Trim();
             }    
             if (updates.ContainsKey(5))
             {
@@ -360,6 +354,180 @@ namespace HumaneSociety
             var specifiedAnimal = db.Animals.Where(Animal => Animal.AnimalId == iD).Select(Animal => Animal);
             return (Animal)specifiedAnimal;
 
+        }
+
+        public static void ReadCSVFile(string file)
+        {
+            IEnumerable<string> stringOfCSV = File.ReadLines(file);
+            var results = stringOfCSV.Select(s => s.Split(',').Skip(1));
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            foreach (string[] s in results)
+            {
+                bool rowIsValid = true;
+                for (int i = 0; i < s.Length; i++)
+                {
+                    bool columnIsValid = ValidateFileInput(i, s[i], db);
+                    if (columnIsValid == false)
+                    {
+                        rowIsValid = false;
+                        Console.WriteLine($"Column containing {s[i]} was invalid. Row {i + 1} from file was skipped.");
+                        break;
+                    }
+                }
+                if (rowIsValid == true)
+                {
+                    Animal animal = new Animal();
+                    for (int j = 0; j < s.Length; j++)
+                    {
+                        InsertColumnToNewAnimal(animal, db, j, s);
+                    }
+                    db.Animals.InsertOnSubmit(animal);
+                }
+            }
+            db.SubmitChanges();
+        }
+
+        public static void InsertColumnToNewAnimal(Animal animal, HumaneSocietyDataContext db, int j, string[] s)
+        {
+            if (j == 0)
+            {
+                animal.Name = s[j];
+            } 
+            else if (j == 1)
+            {
+                animal.SpeciesId = Convert.ToInt32(s[j]);
+            }
+            else if (j == 2)
+            {
+                animal.Weight = Convert.ToInt32(s[j]);
+            }
+            else if (j == 3)
+            {
+                animal.Age = Convert.ToInt32(s[j]);
+            }
+            else if (j == 4)
+            {
+                animal.DietPlanId = Convert.ToInt32(s[j]);
+            }
+            else if (j == 5)
+            {
+                animal.Demeanor = s[j];
+            }
+            else if (j == 6)
+            {
+                animal.KidFriendly = Convert.ToBoolean(s[j]);
+            }
+            else if (j == 7)
+            {
+                animal.PetFriendly = Convert.ToBoolean(s[j]);
+            }
+            else  if (j == 8)
+            {
+                animal.Gender = s[j];
+            }
+            else if (j == 9)
+            {
+                if (s[j] == "not adopted")
+                {
+                    animal.AdoptionStatus = "available";
+                }
+                else
+                {
+                    animal.AdoptionStatus = s[j];
+                }
+            }
+            else if (j == 10)
+            {
+                animal.EmployeeId = Convert.ToInt32(s[j]);
+            }
+
+        }
+
+        private static bool ValidateFileInput(int i, string columnValue, HumaneSocietyDataContext db)
+        {
+            if (i == 1 || i == 2 || i == 3 || i == 4 || i == 10)
+            {
+                if (columnValue == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    int result;
+                    bool isNumber = Int32.TryParse(columnValue, out result);
+                    if (isNumber == true && i == 1)
+                    {
+                        bool isValidSpecies = ValidateSpeciesInput(result, db);
+                        return isValidSpecies;
+                    }
+                    else if (isNumber == true && i == 4)
+                    {
+                        bool isValidDiet = ValidateDietPlanInput(result, db);
+                        return isValidDiet;
+                    }
+                    else if (isNumber == true && i == 10)
+                    {
+                        bool isValidEmployee = ValidateEmployeeInput(result, db);
+                        return isValidEmployee;
+                    }
+                    else
+                    {
+                        return isNumber;
+                    }
+                }
+            }
+            else if (i == 6 || i == 7)
+            {
+                if (columnValue == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    bool isBool = bool.TryParse(columnValue, out isBool);
+                    return isBool;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private static bool ValidateSpeciesInput(int result, HumaneSocietyDataContext db)
+        {
+            if (db.Species.SingleOrDefault(s => s.SpeciesId == result) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool ValidateDietPlanInput(int result, HumaneSocietyDataContext db)
+        {
+            if (db.DietPlans.SingleOrDefault(d => d.DietPlanId == result) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool ValidateEmployeeInput(int result, HumaneSocietyDataContext db)
+        {
+            if (db.Employees.SingleOrDefault(e => e.EmployeeId == result) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
