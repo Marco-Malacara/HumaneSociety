@@ -490,26 +490,27 @@ namespace HumaneSociety
         private static void ReadEmployee(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            Console.WriteLine("Firstname: " + employee.FirstName);
-            Console.WriteLine("Lastname: " + employee.LastName);
-            Console.WriteLine("Username: " + employee.UserName);
-            Console.WriteLine("Password: " + employee.Password);
-            Console.WriteLine("Email: " + employee.Email);
-            if (GetEmployeeAnimals(employee).Count() == 0)
+            var employeeToRead = db.Employees.SingleOrDefault(Employee => employee.EmployeeId == Employee.EmployeeId);
+            Console.WriteLine("Firstname: " + employeeToRead.FirstName);
+            Console.WriteLine("Lastname: " + employeeToRead.LastName);
+            Console.WriteLine("Username: " + employeeToRead.UserName);
+            Console.WriteLine("Password: " + employeeToRead.Password);
+            Console.WriteLine("Email: " + employeeToRead.Email);
+            if (GetEmployeeAnimals(employeeToRead).Count() == 0)
             {
                 Console.WriteLine("Animals: no animals assigned");
             }
             else
             {
                 string display = "";
-                foreach (Animal animal in GetEmployeeAnimals(employee))
+                foreach (Animal animal in GetEmployeeAnimals(employeeToRead))
                 {
                     display += $"{animal.Name}, ";
                 }
                 Console.WriteLine($"Animals: {display}");
             }
-            Console.WriteLine("Employee I.D. " + employee.EmployeeId);
-            Console.WriteLine("Employee Number: " + employee.EmployeeNumber);
+            Console.WriteLine("Employee I.D. " + employeeToRead.EmployeeId);
+            Console.WriteLine("Employee Number: " + employeeToRead.EmployeeNumber);
         }
 
         private static List<Animal> GetEmployeeAnimals(Employee employee)
@@ -524,7 +525,12 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var employeeToUpdate = db.Employees.Distinct().Single(user => user.EmployeeId == employee.EmployeeId);
 
-            employeeToUpdate = employee;
+            employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.LastName = employee.LastName;
+            employeeToUpdate.Email = employee.Email;
+            employeeToUpdate.UserName = employee.UserName;
+            employeeToUpdate.Password = employee.Password;
+            employeeToUpdate.EmployeeNumber = employee.EmployeeNumber;
             db.SubmitChanges();
         }
 
