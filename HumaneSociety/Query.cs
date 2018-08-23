@@ -433,11 +433,11 @@ namespace HumaneSociety
         public static void Adopt(Animal animal, Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var joinedAnimalAndAdoptionTable = db.Adoptions.AsEnumerable().Distinct().Join(db.Animals.AsEnumerable(), Adoption => Adoption.AnimalId, Animal => Animal.AnimalId, (Adoption, Animal) => new { Adoption, Animal });
-            var clientAnimal = joinedAnimalAndAdoptionTable.SingleOrDefault(a => a.Animal.AnimalId == animal.AnimalId && a.Adoption.ClientId == client.ClientId);
-            clientAnimal.Animal.AdoptionStatus = "pending";
-            clientAnimal.Adoption.ApprovalStatus = "pending";
-            clientAnimal.Adoption.AdoptionFee = 75;
+            var adoptionToUpdate = db.Adoptions.Distinct().SingleOrDefault(Adoption => Adoption.ClientId == client.ClientId);
+            var animalToAdopt = db.Animals.Distinct().SingleOrDefault(Animal => Animal.AnimalId == animal.AnimalId);
+            adoptionToUpdate.ApprovalStatus = "pending";
+            animalToAdopt.AdoptionStatus = "pending";
+            adoptionToUpdate.AdoptionFee = 75;
             db.SubmitChanges();
         }
 
