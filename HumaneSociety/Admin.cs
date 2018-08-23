@@ -113,7 +113,8 @@ namespace HumaneSociety
         private Employee UpdateEmployeeInfo(Employee employee)
         {
             bool isUpdating = true;
-            while(isUpdating)
+            Employee newEmployeeInfo = employee;
+            while (isUpdating)
             {
                 List<string> options = new List<string>() { "What would you like to change (choose a number)?", "1. First Name", "2. Last Name", "3. Email", "4. Username", "5. Password", "6. Employee Number", "7. Finished" };
                 UserInterface.DisplayUserOptions(options);
@@ -121,29 +122,29 @@ namespace HumaneSociety
                 switch (input)
                 {
                     case 1:
-                        employee.FirstName = UserInterface.GetStringData("the employee's", "new first name");
+                        newEmployeeInfo.FirstName = UserInterface.GetStringData("the employee's", "new first name");
                         break;
                     case 2:
-                        employee.LastName = UserInterface.GetStringData("the employee's", "new last name");
+                        newEmployeeInfo.LastName = UserInterface.GetStringData("the employee's", "new last name");
                         break;
                     case 3:
-                        employee.Email = UserInterface.GetStringData("the employee's", "new email address");
+                        newEmployeeInfo.Email = UserInterface.GetStringData("the employee's", "new email address");
                         break;
                     case 4:
-                        employee.UserName = UserInterface.GetStringData("the employee's", "new username");
+                        newEmployeeInfo.UserName = UserInterface.GetStringData("the employee's", "new username");
                         break;
                     case 5:
-                        employee.Password = UserInterface.GetStringData("the employee's", "new password");
+                        newEmployeeInfo.Password = UserInterface.GetStringData("the employee's", "new password");
                         break;
                     case 6:
-                        employee.EmployeeNumber = UserInterface.GetIntegerData("the employee's", "new employee number");
+                        newEmployeeInfo.EmployeeNumber = UserInterface.GetIntegerData("the employee's", "new employee number");
                         break;
                     case 7:
                         isUpdating = false;
                         break;
                 }
             }
-            return employee;
+            return newEmployeeInfo;
             
         }
 
