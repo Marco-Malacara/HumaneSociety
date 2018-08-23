@@ -294,7 +294,7 @@ namespace HumaneSociety
             {
                 Console.Clear();
                 employee = Query.EmployeeLogin(userName, password);
-                UserInterface.DisplayUserOptions("Login successfull. Welcome.");
+                UserInterface.DisplayUserOptions("Login successful. Welcome.");
             }
             catch
             {
