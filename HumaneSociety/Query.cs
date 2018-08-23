@@ -234,12 +234,7 @@ namespace HumaneSociety
             }
             if (updates.ContainsKey(3))
             {
-                int possibleAge;
-                bool isAge = Int32.TryParse(updates[3], out possibleAge);
-                if (isAge)
-                {
-                    animalToUpdate.Age = possibleAge;
-                }
+                animalToUpdate.Age = int.Parse(updates[3]);
             }
             if (updates.ContainsKey(4))
             {
@@ -247,34 +242,29 @@ namespace HumaneSociety
             }    
             if (updates.ContainsKey(5))
             {
-                if (updates[5].ToLower().Trim() == "true" || updates[5].Trim() == "1" || updates[5].Trim().ToLower() == "yes")
+                if (updates[5].ToLower().Trim() == "true")
                 {
                     animalToUpdate.KidFriendly = true;
                 }
-                else if (updates[5].ToLower().Trim() == "false" || updates[5].Trim() == "0" || updates[5].Trim().ToLower() == "no")
+                else if (updates[5].ToLower().Trim() == "false")
                 {
                     animalToUpdate.KidFriendly = false;
                 }
             }
             if (updates.ContainsKey(6))
             {
-                if (updates[6].ToLower().Trim() == "true" || updates[6].Trim() == "1" || updates[6].Trim().ToLower() == "yes")
+                if (updates[6].ToLower().Trim() == "true")
                 {
                     animalToUpdate.PetFriendly = true;
                 }
-                else if (updates[6].ToLower().Trim() == "false" || updates[6].Trim() == "0" || updates[6].Trim().ToLower() == "no")
+                else if (updates[6].ToLower().Trim() == "false")
                 {
                     animalToUpdate.PetFriendly = false;
                 }
             }
             if (updates.ContainsKey(7))
             {
-                int possibleWeight;
-                bool isWeight = Int32.TryParse(updates[7], out possibleWeight);
-                if (isWeight)
-                {
-                    animalToUpdate.Weight = possibleWeight;
-                }
+                animalToUpdate.Weight = int.Parse(updates[7]);
             }
             if (updates.ContainsKey(8))
             {
