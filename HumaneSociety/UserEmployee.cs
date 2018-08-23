@@ -311,56 +311,26 @@ namespace HumaneSociety
         private void CreateNewEmployee()
         {
             Console.Clear();
-            string email = UserInterface.GetStringData("email", "your");
-            int employeeNumber = int.Parse(UserInterface.GetStringData("employee number", "your"));
+            Employee employee = new Employee();
+            employee.FirstName = UserInterface.GetStringData("first name", "the employee's");
+            employee.LastName = UserInterface.GetStringData("last name", "the employee's");
+            employee.EmployeeNumber = UserInterface.GetIntegerData("employee number", "the employee's");
+            employee.Email = UserInterface.GetStringData("email", "the employee's");
+            employee.UserName = UserInterface.GetStringData("username", "the employee's");
+            employee.Password = UserInterface.GetStringData("password", "the employee's");
             try
             {
-                employee = Query.RetrieveEmployeeUser(email, employeeNumber);
+                Query.AddEmployee(employee);
+                Console.Clear();
+                Console.WriteLine("Employee created");
             }
             catch
             {
                 UserInterface.DisplayUserOptions("Employee not found please contact your administrator");
                 PointOfEntry.Run();
             }
-            if (employee.Password != null)
-            {
-                UserInterface.DisplayUserOptions("User already in use please log in or contact your administrator");
-                LogIn();
-                return;
-            }
-            else
-            {
-                SetEmployeeUsernameAndPassword();
-            }
+            
         }
-
-        private void SetEmployeeUsernameAndPassword()
-        {
-            GetUserName();
-            GetPassword();
-            Query.AddEmployee(employee);
-        }
-
-        private void GetPassword()
-        {
-            UserInterface.DisplayUserOptions("Please enter your password: (CaSe SeNsItIvE)");
-            employee.Password = UserInterface.GetUserInput();
-        }
-
-        private void GetUserName()
-        {
-            Console.Clear();
-            string username = UserInterface.GetStringData("username", "your");
-            if (Query.CheckEmployeeUserNameExist(username))
-            {
-                UserInterface.DisplayUserOptions("Username already in use please try another username.");
-                GetUserName();
-            }
-            else
-            {
-                employee.UserName = username;
-                UserInterface.DisplayUserOptions("Username successful");
-            }
-        }
+        
     }
 }
