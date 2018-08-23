@@ -712,7 +712,6 @@ namespace HumaneSociety
                             default:
                                 animal.AdoptionStatus = s[j].Trim().Replace("\"", "");
                                 break;
-
                         }
                         break;
                     case 11:
