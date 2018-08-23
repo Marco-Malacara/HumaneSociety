@@ -88,8 +88,10 @@ namespace HumaneSociety
             UserInterface.DisplayEmployees(employees);
             int employeeid = UserInterface.GetIntegerData("id number", "the employee's");
             Employee employee = Query.GetEmployeeById(employeeid);
+            
             try
             {
+                UpdateEmployeeInfo(employee);
                 Query.RunEmployeeQueries(employee, "update");
                 UserInterface.DisplayUserOptions("Employee update successful.");
             }
@@ -99,6 +101,42 @@ namespace HumaneSociety
                 UserInterface.DisplayUserOptions("Employee update unsuccessful please try again or type exit;");
                 return;
             }
+        }
+        private void UpdateEmployeeInfo(Employee employee)
+        {
+            bool isUpdating = true;
+            while(isUpdating)
+            {
+                List<string> options = new List<string>() { "What would you like to change (choose a number)?", "1. First Name", "2. Last Name", "3. Email", "4. Username", "5. Password", "6. Employee Number, 7. Finished" };
+                UserInterface.DisplayUserOptions(options);
+                int input = UserInterface.GetIntegerData();
+                switch (input)
+                {
+                    case 1:
+                        employee.FirstName = UserInterface.GetStringData("the employee's", "new first name");
+                        break;
+                    case 2:
+                        employee.LastName = UserInterface.GetStringData("the employee's", "new last name");
+                        break;
+                    case 3:
+                        employee.Email = UserInterface.GetStringData("the employee's", "new email address");
+                        break;
+                    case 4:
+                        employee.UserName = UserInterface.GetStringData("the employee's", "new username");
+                        break;
+                    case 5:
+                        employee.Password = UserInterface.GetStringData("the employee's", "new password");
+                        break;
+                    case 6:
+                        employee.EmployeeNumber = UserInterface.GetIntegerData("the employee's", "new employee number");
+                        break;
+                    case 7:
+                        isUpdating = false;
+                        break;
+                }
+            }
+            return;
+            
         }
 
         private void ReadEmployee()
@@ -144,7 +182,7 @@ namespace HumaneSociety
             Employee employee = new Employee();
             employee.FirstName = UserInterface.GetStringData("first name", "the employee's");
             employee.LastName = UserInterface.GetStringData("last name", "the employee's");
-            employee.EmployeeNumber = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
+            employee.EmployeeNumber = UserInterface.GetIntegerData("employee number", "the employee's");
             employee.Email = UserInterface.GetStringData("email", "the employee's"); ;
             try
             {
