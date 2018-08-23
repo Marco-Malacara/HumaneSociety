@@ -496,15 +496,9 @@ namespace HumaneSociety
                 string display = "";
                 foreach (Animal animal in GetEmployeeAnimals(employee))
                 {
-                    if ((GetEmployeeAnimals(employee).Count() - 1) == GetEmployeeAnimals(employee).IndexOf(animal))
-                    {
-                        display += $"{animal.Name}"; 
-                    }
-                    else
-                    {
-                        display += $"{animal.Name}, ";
-                    }
+                    display += $"{animal.Name}, ";
                 }
+                display.Remove(display.Length - 3);
                 Console.WriteLine($"Animals: {display}");
             }
             Console.WriteLine("Employee I.D. " + employee.EmployeeId);
