@@ -487,22 +487,22 @@ namespace HumaneSociety
             Console.WriteLine("Username: " + employeeToRead.UserName);
             Console.WriteLine("Password: " + employeeToRead.Password);
             Console.WriteLine("Email: " + employeeToRead.Email);
-            if (GetEmployeeAnimals(employee).Count() == 0)
+            if (GetEmployeeAnimals(employeeToRead).Count() == 0)
             {
                 Console.WriteLine("Animals: no animals assigned");
             }
             else
             {
                 string display = "";
-                foreach (Animal animal in GetEmployeeAnimals(employee))
+                foreach (Animal animal in GetEmployeeAnimals(employeeToRead))
                 {
                     display += $"{animal.Name}, ";
                 }
                 display.Remove(display.Length - 3);
                 Console.WriteLine($"Animals: {display}");
             }
-            Console.WriteLine("Employee I.D. " + employee.EmployeeId);
-            Console.WriteLine("Employee Number: " + employee.EmployeeNumber);
+            Console.WriteLine("Employee I.D. " + employeeToRead.EmployeeId);
+            Console.WriteLine("Employee Number: " + employeeToRead.EmployeeNumber);
         }
 
         private static List<Animal> GetEmployeeAnimals(Employee employee)
