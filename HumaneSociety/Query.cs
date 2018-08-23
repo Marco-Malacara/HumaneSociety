@@ -299,22 +299,11 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             int roomNumber = int.Parse(userEnteredNumber);
-            Room roomToClear = db.Rooms.SingleOrDefault(r => r.AnimalId == animalToUpdate.AnimalId);
-            if (roomToClear != null)
+            Room roomToUpdate = db.Rooms.SingleOrDefault(r => r.AnimalId == animalToUpdate.AnimalId);
+            if (roomToUpdate != null)
             {
-                roomToClear.AnimalId = null;
-            }
-            Room roomToPopulate = db.Rooms.SingleOrDefault(r => r.RoomNumber == roomNumber);
-            if (roomToPopulate != null)
-            {
-                if (roomToPopulate.AnimalId == null)
-                {
-                    roomToPopulate.AnimalId = animalToUpdate.AnimalId;
-                }
-                else
-                {
-                    Console.WriteLine("The room was not updated because the room is already taken.");
-                }
+                roomToUpdate.RoomNumber = roomNumber;
+                db.SubmitChanges();
             }
             else
             {
