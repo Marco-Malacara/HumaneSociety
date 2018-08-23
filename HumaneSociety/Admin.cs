@@ -144,7 +144,7 @@ namespace HumaneSociety
             Employee employee = new Employee();
             employee.FirstName = UserInterface.GetStringData("first name", "the employee's");
             employee.LastName = UserInterface.GetStringData("last name", "the employee's");
-            employee.EmployeeNumber = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
+            employee.EmployeeNumber = UserInterface.GetIntegerData("employee number", "the employee's");
             employee.Email = UserInterface.GetStringData("email", "the employee's"); ;
             try
             {
