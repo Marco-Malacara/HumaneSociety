@@ -723,54 +723,34 @@ namespace HumaneSociety
 
         private static bool ValidateFileInput(int i, string columnValue, HumaneSocietyDataContext db)
         {
+            if (columnValue == "null")
+            {
+                return true;
+            }
             if (i == 1 || i == 2 || i == 3 || i == 4 || i == 11)
             {
-                if (columnValue == "null")
+                int result;
+                bool isNumber = Int32.TryParse(columnValue, out result);
+                if (isNumber && i == 1)
                 {
-                    return true;
+                    return ValidateSpeciesInput(result, db);
+                }
+                else if (isNumber && i == 4)
+                {
+                    return ValidateDietPlanInput(result, db);
+                }
+                else if (isNumber && i == 11)
+                {
+                    return ValidateEmployeeInput(result, db);
                 }
                 else
                 {
-                    int result;
-                    bool isNumber = Int32.TryParse(columnValue, out result);
-                    if (isNumber == true && i == 1)
-                    {
-                        bool isValidSpecies = ValidateSpeciesInput(result, db);
-                        return isValidSpecies;
-                    }
-                    else if (isNumber == true && i == 4)
-                    {
-                        bool isValidDiet = ValidateDietPlanInput(result, db);
-                        return isValidDiet;
-                    }
-                    else if (isNumber == true && i == 11)
-                    {
-                        bool isValidEmployee = ValidateEmployeeInput(result, db);
-                        return isValidEmployee;
-                    }
-                    else
-                    {
-                        return isNumber;
-                    }
+                    return isNumber;
                 }
             }
             else if (i == 7 || i == 8)
             {
-                if (columnValue == "null")
-                {
-                    return true;
-                }
-                else
-                {
-                    if (columnValue == "1" || columnValue == "0")
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                return columnValue == "1" || columnValue == "0";
             }
             else
             {
