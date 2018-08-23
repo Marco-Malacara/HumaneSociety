@@ -16,10 +16,12 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var adoptionToUpdate = db.Adoptions.Single(a => adoption.AdoptionId == a.AdoptionId);
+            var animalToUpdate = db.Animals.Single(Animal => Animal.AnimalId == adoption.AnimalId);
             switch (isApproved)
             {
                 case true:
                     adoptionToUpdate.ApprovalStatus = "approved";
+                    animalToUpdate.AdoptionStatus = "adopted";
                     break;
                 case false:
                     adoptionToUpdate.ApprovalStatus = "available";
@@ -341,7 +343,7 @@ namespace HumaneSociety
             return db.Employees.SingleOrDefault(user => userName == user.UserName) != null;
         }
 
-        public static void AddUsernameAndPassword(Employee employee)
+        public static void AddEmployee(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             db.Employees.InsertOnSubmit(employee);
@@ -395,7 +397,7 @@ namespace HumaneSociety
             switch (input)
             {
                 case "create":
-                    runQueries = AddUsernameAndPassword;
+                    runQueries = AddEmployee;
                     break;
                 case "read":
                     runQueries = ReadEmployee;
@@ -412,18 +414,31 @@ namespace HumaneSociety
             runQueries(employee);
         }
 
+        public static IEnumerable<Employee> GetEmployees()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var employees = db.Employees.Distinct().AsEnumerable().Select(Employee => Employee);
+            return employees;
+        }
+
+        public static Employee GetEmployeeById (int id)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var employee = db.Employees.Distinct().SingleOrDefault(Employee => Employee.EmployeeId == id);
+            return employee;
+        }
+
         private static void ReadEmployee(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var displayData = db.Employees.Distinct().Single(read => read.EmployeeNumber == employee.EmployeeNumber);
-            Console.WriteLine("Firstname: " + displayData.FirstName);
-            Console.WriteLine("Lastname: " + displayData.LastName);
-            Console.WriteLine("Username: " + displayData.UserName);
-            Console.WriteLine("Password: " + displayData.Password);
-            Console.WriteLine("Email: " + displayData.Email);
-            Console.WriteLine("Animals: " + displayData.Animals);
-            Console.WriteLine("Emloyee I.D. " + displayData.EmployeeId);
-            Console.WriteLine("Employee Number: " + displayData.EmployeeNumber);
+            Console.WriteLine("Firstname: " + employee.FirstName);
+            Console.WriteLine("Lastname: " + employee.LastName);
+            Console.WriteLine("Username: " + employee.UserName);
+            Console.WriteLine("Password: " + employee.Password);
+            Console.WriteLine("Email: " + employee.Email);
+            Console.WriteLine("Animals: " + employee.Animals);
+            Console.WriteLine("Employee I.D. " + employee.EmployeeId);
+            Console.WriteLine("Employee Number: " + employee.EmployeeNumber);
             Console.WriteLine("Press [ENTER] to continue.");
             Console.ReadLine();
         }
@@ -440,7 +455,7 @@ namespace HumaneSociety
         private static void DeleteEmployee(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var employeeToDelete = db.Employees.SingleOrDefault(user => user.EmployeeNumber == employee.EmployeeNumber);
+            var employeeToDelete = db.Employees.SingleOrDefault(user => user.EmployeeId == employee.EmployeeId);
             if (employeeToDelete != null)
             {
                 db.Employees.DeleteOnSubmit(employeeToDelete);
