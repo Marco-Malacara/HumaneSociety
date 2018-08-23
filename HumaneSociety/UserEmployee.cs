@@ -147,7 +147,7 @@ namespace HumaneSociety
             switch (input)
             {
                 case 1:
-                    Query.DisplayAnimalInfo(animal);
+                    Query.DisplayAnimalInfo(animal.AnimalId);
                     Console.Clear();
                     return;
                 case 2:
