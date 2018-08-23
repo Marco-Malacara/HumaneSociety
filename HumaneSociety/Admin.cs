@@ -98,7 +98,7 @@ namespace HumaneSociety
             
             try
             {
-                UpdateEmployeeInfo(employee);
+                employee = UpdateEmployeeInfo(employee);
                 Query.RunEmployeeQueries(employee, "update");
                 UserInterface.DisplayUserOptions("Employee update successful. Press Enter to continue.");
                 Console.ReadLine();
@@ -110,12 +110,12 @@ namespace HumaneSociety
                 return;
             }
         }
-        private void UpdateEmployeeInfo(Employee employee)
+        private Employee UpdateEmployeeInfo(Employee employee)
         {
             bool isUpdating = true;
             while(isUpdating)
             {
-                List<string> options = new List<string>() { "What would you like to change (choose a number)?", "1. First Name", "2. Last Name", "3. Email", "4. Username", "5. Password", "6. Employee Number, 7. Finished" };
+                List<string> options = new List<string>() { "What would you like to change (choose a number)?", "1. First Name", "2. Last Name", "3. Email", "4. Username", "5. Password", "6. Employee Number", "7. Finished" };
                 UserInterface.DisplayUserOptions(options);
                 int input = UserInterface.GetIntegerData();
                 switch (input)
@@ -143,7 +143,7 @@ namespace HumaneSociety
                         break;
                 }
             }
-            return;
+            return employee;
             
         }
 
