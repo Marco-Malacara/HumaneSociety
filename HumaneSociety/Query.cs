@@ -486,7 +486,14 @@ namespace HumaneSociety
             Console.WriteLine("Username: " + employee.UserName);
             Console.WriteLine("Password: " + employee.Password);
             Console.WriteLine("Email: " + employee.Email);
-            Console.WriteLine("Animals: " + employee.Animals);
+            if (employee.Animals == null)
+            {
+                Console.WriteLine("Animals: no animals assigned");
+            }
+            else
+            {
+                Console.WriteLine("Animals: " + employee.Animals);
+            }
             Console.WriteLine("Employee I.D. " + employee.EmployeeId);
             Console.WriteLine("Employee Number: " + employee.EmployeeNumber);
             Console.WriteLine("Press [ENTER] to continue.");
