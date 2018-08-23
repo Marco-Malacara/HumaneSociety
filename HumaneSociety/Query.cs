@@ -135,16 +135,7 @@ namespace HumaneSociety
             }
             if (searchParameters.ContainsKey(3))
             {
-                int number;
-                bool isNumber = Int32.TryParse(searchParameters[3], out number);
-                if (isNumber == true)
-                {
-                    animals = (from animal in animals where animal.Age == number select animal);
-                }
-                else
-                {
-                    Console.WriteLine("Could not search by age because a valid number was not entered.");
-                }
+                animals = (from animal in animals where animal.Age == int.Parse(searchParameters[3]) select animal);
             }
             if (searchParameters.ContainsKey(4))
             {
@@ -152,67 +143,39 @@ namespace HumaneSociety
             }
             if (searchParameters.ContainsKey(5))
             {
-                bool parameter = false;
-                if (searchParameters[5].ToLower().Trim() == "true" || searchParameters[5].ToLower().Trim() == "yes" || searchParameters[5] == "1")
+                bool parameter;
+                if (searchParameters[5].ToLower().Trim() == "true")
                 {
                     parameter = true;
                     animals = (from animal in animals where animal.KidFriendly == parameter select animal);
                 }
-                else if (searchParameters[5].ToLower().Trim() == "false" || searchParameters[5].ToLower().Trim() == "no" || searchParameters[5] == "0")
+                else if (searchParameters[5].ToLower().Trim() == "false")
                 {
                     parameter = false;
                     animals = (from animal in animals where animal.KidFriendly == parameter select animal);
                 }
-                else
-                {
-                    Console.WriteLine("Could not search by Kid Friendly value because the value entered was not valid.");
-                }
-                
             }
             if (searchParameters.ContainsKey(6))
             {
-                bool parameter = false;
-                if (searchParameters[6].ToLower().Trim() == "true" || searchParameters[6].ToLower().Trim() == "yes" || searchParameters[6] == "1")
+                bool parameter;
+                if (searchParameters[6].ToLower().Trim() == "true")
                 {
                     parameter = true;
                     animals = (from animal in animals where animal.PetFriendly == parameter select animal);
                 }
-                else if (searchParameters[6].ToLower().Trim() == "false" || searchParameters[6].ToLower().Trim() == "no" || searchParameters[6] == "0")
+                else if (searchParameters[6].ToLower().Trim() == "false")
                 {
                     parameter = false;
                     animals = (from animal in animals where animal.PetFriendly == parameter select animal);
                 }
-                else
-                {
-                    Console.WriteLine("Could not search by Pet Friendly value because the value entered was not valid.");
-                }
-                
             }
             if (searchParameters.ContainsKey(7))
             {
-                int number;
-                bool isNumber = Int32.TryParse(searchParameters[7], out number);
-                if (isNumber == true)
-                {
-                    animals = (from animal in animals where animal.Weight == number select animal);
-                }
-                else
-                {
-                    Console.WriteLine("Could not search by weight because a valid number was not entered.");
-                }
+                animals = (from animal in animals where animal.Weight == int.Parse(searchParameters[7]) select animal);
             }
             if (searchParameters.ContainsKey(8))
             {
-                int number;
-                bool isNumber = Int32.TryParse(searchParameters[8], out number);
-                if (isNumber == true)
-                {
-                    animals = (from animal in animals where animal.AnimalId == number select animal);
-                }
-                else
-                {
-                    Console.WriteLine("Could not search by ID because a valid number was not entered.");
-                }
+                animals = (from animal in animals where animal.AnimalId == int.Parse(searchParameters[8]) select animal);
             }
             return animals;
 
@@ -257,7 +220,8 @@ namespace HumaneSociety
                 if (possibleSpecies == null)
                 {   
                     CreateNewSpecies(updates[1].ToLower().Trim(), db);
-                    animalToUpdate.SpeciesId = db.Species.Single(s => s.Name == updates[1].ToLower().Trim()).SpeciesId;
+                    EnterUpdate(animal, updates);
+                    return;
                 }
                 else
                 {
@@ -270,16 +234,7 @@ namespace HumaneSociety
             }
             if (updates.ContainsKey(3))
             {
-                int possibleAge;
-                bool isAge = Int32.TryParse(updates[3], out possibleAge);
-                if (isAge == true)
-                {
-                    animalToUpdate.Age = possibleAge;
-                }
-                else
-                {
-                    Console.WriteLine("Age was not updated because a number was not entered.");
-                }  
+                animalToUpdate.Age = int.Parse(updates[3]);
             }
             if (updates.ContainsKey(4))
             {
@@ -287,46 +242,29 @@ namespace HumaneSociety
             }    
             if (updates.ContainsKey(5))
             {
-                if (updates[5].ToLower().Trim() == "true" || updates[5].Trim() == "1" || updates[5].Trim().ToLower() == "yes")
+                if (updates[5].ToLower().Trim() == "true")
                 {
                     animalToUpdate.KidFriendly = true;
                 }
-                else if (updates[5].ToLower().Trim() == "false" || updates[5].Trim() == "0" || updates[5].Trim().ToLower() == "no")
+                else if (updates[5].ToLower().Trim() == "false")
                 {
                     animalToUpdate.KidFriendly = false;
-                }
-                else
-                {
-                    Console.WriteLine("Kid Friendly value was not updated because a valid yes/no/true/false/1/0 value was not entered.");
                 }
             }
             if (updates.ContainsKey(6))
             {
-                if (updates[6].ToLower().Trim() == "true" || updates[6].Trim() == "1" || updates[6].Trim().ToLower() == "yes")
+                if (updates[6].ToLower().Trim() == "true")
                 {
                     animalToUpdate.PetFriendly = true;
                 }
-                else if (updates[6].ToLower().Trim() == "false" || updates[6].Trim() == "0" || updates[6].Trim().ToLower() == "no")
+                else if (updates[6].ToLower().Trim() == "false")
                 {
                     animalToUpdate.PetFriendly = false;
-                }
-                else
-                {
-                    Console.WriteLine("Pet Friendly value was not updated because a valid yes/no/true/false/1/0 value was not entered.");
                 }
             }
             if (updates.ContainsKey(7))
             {
-                int possibleWeight;
-                bool isWeight = Int32.TryParse(updates[7], out possibleWeight);
-                if (isWeight == true)
-                {
-                    animalToUpdate.Weight = possibleWeight;
-                }
-                else
-                {
-                    Console.WriteLine("Weight could not be updated because a valid number was not entered.");
-                }
+                animalToUpdate.Weight = int.Parse(updates[7]);
             }
             if (updates.ContainsKey(8))
             {
@@ -335,7 +273,6 @@ namespace HumaneSociety
             if (updates.ContainsKey(9))
             {
                 UpdateRoom(animalToUpdate, db, updates[9]);
-                
             }
             db.SubmitChanges();
             return;
