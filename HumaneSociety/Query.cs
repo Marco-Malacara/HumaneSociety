@@ -304,6 +304,7 @@ namespace HumaneSociety
             {
                 roomToUpdate.RoomNumber = roomNumber;
                 db.SubmitChanges();
+                Console.WriteLine($"Animal succesfully moved to {roomNumber}!");
             }
             else
             {
@@ -334,11 +335,16 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var animalToDelete = db.Animals.SingleOrDefault(Animal => Animal.AnimalId == animal.AnimalId);
+            var removeShots = db.AnimalShots.Select(shot => shot).Where(shot => shot.AnimalId == animal.AnimalId);
+            foreach (AnimalShot shot in removeShots)
+            {
+                db.AnimalShots.DeleteOnSubmit(shot);
+            }
             if (animalToDelete != null)
             {
                 db.Animals.DeleteOnSubmit(animalToDelete);
-                db.SubmitChanges();
             }
+            db.SubmitChanges();
         }
         public static Specy GetSpecies()
         {
