@@ -185,7 +185,7 @@ namespace HumaneSociety
                 }
                 else
                 {
-                    throw new Exception("Age could not be updated because a valid number was not entered.");
+                    Console.WriteLine("Age was not updated because a number was not entered.");
                 }  
             }
             if (updates.ContainsKey(4))
@@ -204,7 +204,7 @@ namespace HumaneSociety
                 }
                 else
                 {
-                    throw new Exception("Kid friendly value was not updated because a valid value was not entered.");
+                    Console.WriteLine("Kid Friendly value was not updated because a valid yes/no/true/false/1/0 value was not entered.");
                 }
             }
             if (updates.ContainsKey(6))
@@ -219,7 +219,7 @@ namespace HumaneSociety
                 }
                 else
                 {
-                    throw new Exception("Pet friendly value was not updated because a valid value was not entered.");
+                    Console.WriteLine("Pet Friendly value was not updated because a valid yes/no/true/false/1/0 value was not entered.");
                 }
             }
             if (updates.ContainsKey(7))
@@ -232,12 +232,12 @@ namespace HumaneSociety
                 }
                 else
                 {
-                    throw new Exception("Weight could not be updated because a valid number was not entered.");
+                    Console.WriteLine("Weight could not be updated because a valid number was not entered.");
                 }
             }
             if (updates.ContainsKey(8))
             {
-                throw new Exception("Id cannot be changed.");
+                Console.WriteLine("Id was not updated because id cannot be changed.");
             }
             if (updates.ContainsKey(9))
             {
@@ -264,17 +264,24 @@ namespace HumaneSociety
                 roomToPopulate = db.Rooms.SingleOrDefault(r => r.RoomNumber == possibleRoomNumber);
                 if (roomToPopulate != null)
                 {
-                    roomToPopulate.AnimalId = animalToUpdate.AnimalId;
+                    if (roomToPopulate.AnimalId == null)
+                    {
+                        roomToPopulate.AnimalId = animalToUpdate.AnimalId;
+                    }
+                    else
+                    {
+                        Console.WriteLine("The room was not updated because the room is already taken.");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Room number to move animal to was not found.");
+                    Console.WriteLine("Room number to move animal to was not found.");
                 }
 
             }
             else
             {
-                throw new Exception("Room number to move animal to was not a valid number");
+                Console.WriteLine("Room number entered was not a number");
             }
         }
 
