@@ -84,6 +84,8 @@ namespace HumaneSociety
                 {
                     CreateShot(shotName, db);
                     AdministerShot(shotName, animal);
+                    Console.WriteLine("The shot was created and marked as administered to the animal. Press Enter to continue.");
+                    Console.ReadLine();
                     return;
                 }
             }
@@ -278,8 +280,9 @@ namespace HumaneSociety
             return;
         }
 
-        private static void UpdateRoom(Animal animalToUpdate, HumaneSocietyDataContext db, string userEnteredNumber)
+        private static void UpdateRoom(Animal animalToUpdate, string userEnteredNumber)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             int roomNumber = int.Parse(userEnteredNumber);
             Room roomToClear = db.Rooms.SingleOrDefault(r => r.AnimalId == animalToUpdate.AnimalId);
             if (roomToClear != null)
@@ -300,8 +303,27 @@ namespace HumaneSociety
             }
             else
             {
-                Console.WriteLine("Room number to move animal to was not found.");
+                Console.WriteLine("Room number to move animal to was not found. Would you like to create it?");
+                bool createNewRoom = (bool)UserInterface.GetBitData();
+                if (createNewRoom)
+                {
+                    CreateRoom(db, roomNumber);
+                    UpdateRoom(animalToUpdate, roomNumber.ToString());
+                    Console.WriteLine("The room was created and the animal was marked as moved to the new room. Press Enter to continue");
+                    Console.ReadLine();
+                    return;
+                }
+                
+
             }
+        }
+
+        private static void CreateRoom(HumaneSocietyDataContext db, int roomNumber)
+        {
+            Room room = new Room();
+            room.RoomNumber = roomNumber;
+            db.Rooms.InsertOnSubmit(room);
+            db.SubmitChanges();
         }
 
         public static void RemoveAnimal(Animal animal)
