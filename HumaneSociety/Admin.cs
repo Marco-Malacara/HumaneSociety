@@ -106,8 +106,10 @@ namespace HumaneSociety
         {
             try
             {
-                Employee employee = new Employee();
-                employee.EmployeeNumber = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
+                List<Employee> employees = Query.GetEmployees().ToList();
+                UserInterface.DisplayEmployees(employees);
+                int employeeid = UserInterface.GetIntegerData("id number", "the employee's");
+                Employee employee = Query.GetEmployeeById(employeeid);
                 Query.RunEmployeeQueries(employee, "read");
             }
             catch
