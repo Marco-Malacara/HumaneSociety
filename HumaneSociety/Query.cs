@@ -51,6 +51,65 @@ namespace HumaneSociety
 
         }
 
+        public static void AdministerShot(string shotName, Animal animal)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            bool doesShotExist = CheckIfShotExists(shotName, db);
+            if (doesShotExist)
+            {
+                int shotId = GetShotId(shotName, db);
+                bool needsShot = CheckIfAnimalNeedsShot(shotId, db);
+                if (needsShot)
+                {
+                    AnimalShot animalShot = new AnimalShot();
+                    animalShot.AnimalId = animal.AnimalId;
+                    animalShot.ShotId = shotId;
+                    db.AnimalShots.InsertOnSubmit(animalShot);
+                    db.SubmitChanges();
+                }
+                else
+                {
+                    Console.WriteLine("The animal already has this shot.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("The shot you are trying to administer does not exist. Would you like to create it?");
+                bool createNewShot = (bool)UserInterface.GetBitData();
+                if (createNewShot)
+                {
+                    CreateShot(shotName, db);
+                    AdministerShot(shotName, animal);
+                    return;
+                }
+            }
+
+        }
+
+        private static bool CheckIfShotExists(string shotName, HumaneSocietyDataContext db)
+        {
+            return (db.Shots.SingleOrDefault(s => s.Name == shotName.ToLower().Trim()) != null);
+            
+        }
+
+        private static int GetShotId(string shotName, HumaneSocietyDataContext db)
+        {
+            return db.Shots.Single(s => shotName.ToLower().Trim() == s.Name).ShotId;
+        }
+
+        private static bool CheckIfAnimalNeedsShot(int shotId, HumaneSocietyDataContext db)
+        {
+            return (db.AnimalShots.SingleOrDefault(s => s.ShotId == shotId) == null);
+        }
+
+        public static void CreateShot(string shotName, HumaneSocietyDataContext db)
+        {
+            Shot newShot = new Shot();
+            newShot.Name = shotName.Trim().ToLower();
+            db.Shots.InsertOnSubmit(newShot);
+            db.SubmitChanges();
+        }
+
         public static IEnumerable<AnimalShot> GetShots(Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
