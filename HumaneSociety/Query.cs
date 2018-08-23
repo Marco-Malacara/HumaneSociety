@@ -75,7 +75,16 @@ namespace HumaneSociety
             }
             if (searchParameters.ContainsKey(3))
             {
-                animals = (from animal in animals where animal.Age == int.Parse(searchParameters[3]) select animal);
+                int number;
+                bool isNumber = Int32.TryParse(searchParameters[3], out number);
+                if (isNumber == true)
+                {
+                    animals = (from animal in animals where animal.Age == number select animal);
+                }
+                else
+                {
+                    Console.WriteLine("Could not search by age because a valid number was not entered.");
+                }
             }
             if (searchParameters.ContainsKey(4))
             {
@@ -87,16 +96,18 @@ namespace HumaneSociety
                 if (searchParameters[5].ToLower().Trim() == "true" || searchParameters[5].ToLower().Trim() == "yes" || searchParameters[5] == "1")
                 {
                     parameter = true;
+                    animals = (from animal in animals where animal.KidFriendly == parameter select animal);
                 }
                 else if (searchParameters[5].ToLower().Trim() == "false" || searchParameters[5].ToLower().Trim() == "no" || searchParameters[5] == "0")
                 {
                     parameter = false;
+                    animals = (from animal in animals where animal.KidFriendly == parameter select animal);
                 }
                 else
                 {
-                    //error handling
+                    Console.WriteLine("Could not search by Kid Friendly value because the value entered was not valid.");
                 }
-                animals = (from animal in animals where animal.KidFriendly == parameter select animal);
+                
             }
             if (searchParameters.ContainsKey(6))
             {
@@ -104,24 +115,44 @@ namespace HumaneSociety
                 if (searchParameters[6].ToLower().Trim() == "true" || searchParameters[6].ToLower().Trim() == "yes" || searchParameters[6] == "1")
                 {
                     parameter = true;
+                    animals = (from animal in animals where animal.PetFriendly == parameter select animal);
                 }
                 else if (searchParameters[6].ToLower().Trim() == "false" || searchParameters[6].ToLower().Trim() == "no" || searchParameters[6] == "0")
                 {
                     parameter = false;
+                    animals = (from animal in animals where animal.PetFriendly == parameter select animal);
                 }
                 else
                 {
-                    //error handling
+                    Console.WriteLine("Could not search by Pet Friendly value because the value entered was not valid.");
                 }
-                animals = (from animal in animals where animal.PetFriendly == parameter select animal);
+                
             }
             if (searchParameters.ContainsKey(7))
             {
-                animals = (from animal in animals where animal.Weight == int.Parse(searchParameters[7]) select animal);
+                int number;
+                bool isNumber = Int32.TryParse(searchParameters[7], out number);
+                if (isNumber == true)
+                {
+                    animals = (from animal in animals where animal.Weight == number select animal);
+                }
+                else
+                {
+                    Console.WriteLine("Could not search by weight because a valid number was not entered.");
+                }
             }
             if (searchParameters.ContainsKey(8))
             {
-                animals = (from animal in animals where animal.AnimalId == int.Parse(searchParameters[8]) select animal);
+                int number;
+                bool isNumber = Int32.TryParse(searchParameters[8], out number);
+                if (isNumber == true)
+                {
+                    animals = (from animal in animals where animal.AnimalId == number select animal);
+                }
+                else
+                {
+                    Console.WriteLine("Could not search by ID because a valid number was not entered.");
+                }
             }
             return animals;
 
@@ -283,7 +314,7 @@ namespace HumaneSociety
             }
             else
             {
-                Console.WriteLine("Room number entered was not a number");
+                Console.WriteLine("Room number entered was not a number.");
             }
         }
 
@@ -543,7 +574,7 @@ namespace HumaneSociety
                     if (columnIsValid == false)
                     {
                         rowIsValid = false;
-                        Console.WriteLine($"Column containing {s[i]} was invalid. Row {i + 1} from file was skipped.");
+                        Console.WriteLine($"Column {i + 2 } containing {s[i]} was invalid. The row with this column was skipped.");
                         break;
                     }
                 }
@@ -564,7 +595,7 @@ namespace HumaneSociety
         {
             if (s[j].Trim().Replace("\"","") == "null")
             {
-                
+                //We don't need to insert null to the database, so nothing will happen in this method if the value in the file is null.
             }
             else if (j == 0)
             {
