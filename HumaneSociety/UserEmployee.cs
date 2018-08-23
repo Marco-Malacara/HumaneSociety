@@ -154,35 +154,51 @@ namespace HumaneSociety
             }
         }
 
-        private void CheckShots(Animal animal)
+        private void DisplayAnimalShots(Animal animal)
         {
             List<string> shotInfo = new List<string>();
             var shots = Query.GetShots(animal);
-            if (shots.ToList().Count() == 0)
+            foreach (AnimalShot shot in shots.ToList())
+            {
+                shotInfo.Add($"{shot.Shot.Name} Date: {shot.DateReceived}");
+            }
+            if (shotInfo.Count == 0)
             {
                 Console.WriteLine("Animal has had no shots administered.");
             }
-            foreach(AnimalShot shot in shots.ToList())
+            UserInterface.DisplayUserOptions(shotInfo);
+        }
+        private void CheckShots(Animal animal)
+        {
+            DisplayAnimalShots(animal);
+            DisplayShotMenu(animal);
+        }
+        private void DisplayShotMenu(Animal animal)
+        {
+            string shotName;
+            UserInterface.DisplayUserOptions(new List<string>() { "What would you like to do? (Choose a number)", "1. Administer a new shot", "2. Update a shot", "3. Exit" });
+            int input = UserInterface.GetIntegerData();
+            bool isEditingShots = true;
+            while (isEditingShots)
             {
-
-                shotInfo.Add($"{shot.Shot.Name} Date: {shot.DateReceived}");
-            }
-            if(shotInfo.Count > 0)
-            {
-                UserInterface.DisplayUserOptions(shotInfo);
-                if(UserInterface.GetBitData("Would you like to Update shots?"))
+                switch (input)
                 {
-                    Query.UpdateShot("booster", animal);
+                    case 1:
+                        shotName = UserInterface.GetStringData("the shot's", "name");
+                        Query.AdministerShot(shotName, animal);
+                        break;
+                    case 2:
+                        shotName = UserInterface.GetStringData("the shot's", "name");
+                        Query.UpdateShot(shotName, animal);
+                        break;
+                    case 3:
+                        Console.Clear();
+                        Console.WriteLine("Exited Shot Menu");
+                        isEditingShots = false;
+                        break;
                 }
             }
-            else
-            {
-                if (UserInterface.GetBitData("Would you like to Update shots?"))
-                {
-                    Query.UpdateShot("booster", animal);
-                }
-            }
-            
+            return;
         }
 
         private void UpdateAnimal(Animal animal)
