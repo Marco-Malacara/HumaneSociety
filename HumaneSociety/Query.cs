@@ -33,6 +33,16 @@ namespace HumaneSociety
             }
             db.SubmitChanges();
         }
+
+        public static void DisplayAvailableShots()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var allShots = db.Shots.Select(a => a.Name).ToList();
+            foreach (string shot in allShots)
+            {
+                Console.WriteLine(shot);
+            }
+        }
         
         public static IQueryable<Adoption> GetPendingAdoptions()
         {
