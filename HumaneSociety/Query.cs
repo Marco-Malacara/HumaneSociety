@@ -29,7 +29,9 @@ namespace HumaneSociety
                     Console.WriteLine($"Shelter now has ${shelterToUpdate.Money}.");
                     break;
                 case false:
+                    Console.WriteLine("Adoption declined");
                     adoptionToUpdate.ApprovalStatus = "available";
+                    animalToUpdate.AdoptionStatus = "available";
                     break;
             }
             db.SubmitChanges();
