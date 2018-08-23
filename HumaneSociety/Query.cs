@@ -486,18 +486,27 @@ namespace HumaneSociety
             Console.WriteLine("Username: " + employee.UserName);
             Console.WriteLine("Password: " + employee.Password);
             Console.WriteLine("Email: " + employee.Email);
-            if (employee.Animals == null)
+            if (GetEmployeeAnimals(employee).Count() == 0)
             {
                 Console.WriteLine("Animals: no animals assigned");
             }
             else
             {
-                Console.WriteLine("Animals: " + employee.Animals);
+                Console.WriteLine("Animals:");
+                foreach (Animal animal in GetEmployeeAnimals(employee))
+                {
+                    Console.WriteLine(animal.Name);
+                }
             }
             Console.WriteLine("Employee I.D. " + employee.EmployeeId);
             Console.WriteLine("Employee Number: " + employee.EmployeeNumber);
-            Console.WriteLine("Press [ENTER] to continue.");
-            Console.ReadLine();
+        }
+
+        private static List<Animal> GetEmployeeAnimals(Employee employee)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var animals = db.Animals.Select(a => a).Where(a => a.EmployeeId == employee.EmployeeId);
+            return animals.ToList();
         }
 
         private static void UpdateEmployee(Employee employee)
