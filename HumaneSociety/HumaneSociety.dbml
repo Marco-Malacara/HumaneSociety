@@ -121,4 +121,10 @@
       <Association Name="USState_Address" Member="Addresses" ThisKey="USStateId" OtherKey="USStateId" Type="Address" />
     </Type>
   </Table>
+  <Table Name="dbo.Shelter" Member="Shelters">
+    <Type Name="Shelter">
+      <Column Name="ShelterID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Money" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>
