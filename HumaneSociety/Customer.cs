@@ -105,7 +105,7 @@ namespace HumaneSociety
             UserInterface.DisplayUserOptions("Please enter the ID of the animal you wish to adopt or type reset or exit");
             int iD = UserInterface.GetIntegerData();
             var animal = Query.GetAnimalByID(iD);
-            UserInterface.DisplayAnimalInfo(animal);
+            Query.DisplayAnimalInfo(animal);
             UserInterface.DisplayUserOptions("Would you like to adopt?");
             if ((bool)UserInterface.GetBitData())
             {
@@ -129,7 +129,7 @@ namespace HumaneSociety
            }
            else
            {
-               UserInterface.DisplayAnimalInfo(animals[0]);
+               Query.DisplayAnimalInfo(animals[0]);
            }
            UserInterface.DisplayUserOptions("Press enter to continue");
            Console.ReadLine();

@@ -81,7 +81,7 @@ namespace HumaneSociety
 
         private void ApproveAdoption(Adoption adoption)
         {
-            UserInterface.DisplayAnimalInfo(adoption.Animal);
+            Query.DisplayAnimalInfo(adoption.Animal);
             UserInterface.DisplayClientInfo(adoption.Client);
             UserInterface.DisplayUserOptions("Would you approve this adoption?");
             if ((bool)UserInterface.GetBitData())
@@ -133,12 +133,11 @@ namespace HumaneSociety
         }
 
         private void RunCheckMenuInput(int input, Animal animal)
-        {
-            
+        {   
             switch (input)
             {
                 case 1:
-                    UserInterface.DisplayAnimalInfo(animal);
+                    Query.DisplayAnimalInfo(animal);
                     Console.Clear();
                     return;
                 case 2:
@@ -319,7 +318,7 @@ namespace HumaneSociety
         {
             GetUserName();
             GetPassword();
-            Query.AddUsernameAndPassword(employee);
+            Query.AddEmployee(employee);
         }
 
         private void GetPassword()

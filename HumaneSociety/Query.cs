@@ -414,6 +414,17 @@ namespace HumaneSociety
             runQueries(employee);
         }
 
+        public static void DisplayAnimalInfo(Animal animal)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var animalToDisplay = db.Animals.Distinct().Single(a => a.AnimalId == animal.AnimalId);
+            Room animalRoom = GetRoom(animalToDisplay.AnimalId, db);
+            List<string> info = new List<string>() { "ID: " + animalToDisplay.AnimalId, animalToDisplay.Name, animalToDisplay.Age + " years old", "Demeanor: " + animalToDisplay.Demeanor, "Kid friendly: " + UserInterface.BoolToYesNo(animalToDisplay.KidFriendly), "Pet friendly: " + UserInterface.BoolToYesNo(animalToDisplay.PetFriendly), "Location: " + animalRoom.RoomId, "Weight: " + animalToDisplay.Weight.ToString(), "Food amount in cups: " + animalToDisplay.DietPlan.FoodAmountInCups, "Food type: " + animalToDisplay.DietPlan.FoodType };
+            UserInterface.DisplayUserOptions(info);
+            Console.ReadLine();
+
+        }
+
         public static IEnumerable<Employee> GetEmployees()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -505,9 +516,8 @@ namespace HumaneSociety
         }
         
 
-        public static Room GetRoom(int animalId)
+        public static Room GetRoom(int animalId, HumaneSocietyDataContext db)
         {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var animalRoom = db.Rooms.SingleOrDefault(r => r.AnimalId == animalId);
             return animalRoom;
         }
