@@ -78,8 +78,10 @@ namespace HumaneSociety
                     AnimalShot animalShot = new AnimalShot();
                     animalShot.AnimalId = animal.AnimalId;
                     animalShot.ShotId = shotId;
+                    animalShot.DateReceived = DateTime.Now;
                     db.AnimalShots.InsertOnSubmit(animalShot);
                     db.SubmitChanges();
+                    Console.WriteLine("Shot was administered!");
                 }
                 else
                 {
