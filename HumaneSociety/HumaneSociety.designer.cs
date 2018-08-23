@@ -63,6 +63,9 @@ namespace HumaneSociety
     partial void InsertUSState(USState instance);
     partial void UpdateUSState(USState instance);
     partial void DeleteUSState(USState instance);
+    partial void InsertShelter(Shelter instance);
+    partial void UpdateShelter(Shelter instance);
+    partial void DeleteShelter(Shelter instance);
     #endregion
 		
 		public HumaneSocietyDataContext() : 
@@ -180,6 +183,14 @@ namespace HumaneSociety
 			get
 			{
 				return this.GetTable<USState>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Shelter> Shelters
+		{
+			get
+			{
+				return this.GetTable<Shelter>();
 			}
 		}
 	}
@@ -2657,6 +2668,92 @@ namespace HumaneSociety
 		{
 			this.SendPropertyChanging();
 			entity.USState = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Shelter")]
+	public partial class Shelter : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ShelterID;
+		
+		private System.Nullable<int> _Money;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnShelterIDChanging(int value);
+    partial void OnShelterIDChanged();
+    partial void OnMoneyChanging(System.Nullable<int> value);
+    partial void OnMoneyChanged();
+    #endregion
+		
+		public Shelter()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShelterID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ShelterID
+		{
+			get
+			{
+				return this._ShelterID;
+			}
+			set
+			{
+				if ((this._ShelterID != value))
+				{
+					this.OnShelterIDChanging(value);
+					this.SendPropertyChanging();
+					this._ShelterID = value;
+					this.SendPropertyChanged("ShelterID");
+					this.OnShelterIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Money", DbType="Int")]
+		public System.Nullable<int> Money
+		{
+			get
+			{
+				return this._Money;
+			}
+			set
+			{
+				if ((this._Money != value))
+				{
+					this.OnMoneyChanging(value);
+					this.SendPropertyChanging();
+					this._Money = value;
+					this.SendPropertyChanged("Money");
+					this.OnMoneyChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
