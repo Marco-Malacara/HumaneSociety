@@ -518,6 +518,7 @@ namespace HumaneSociety
             var employeeToUpdate = db.Employees.Distinct().Single(user => user.EmployeeId == employee.EmployeeId);
 
             employeeToUpdate = employee;
+            db.Employees.InsertOnSubmit(employeeToUpdate);
             db.SubmitChanges();
         }
 
