@@ -25,6 +25,7 @@ namespace HumaneSociety
                     animalToUpdate.AdoptionStatus = "adopted";
                     adoptionToUpdate.AdoptionFee = 0;
                     ((Shelter)shelterToUpdate).Money += 75;
+                    adoptionToUpdate.PaymentCollected = true;
                     Console.WriteLine($"Shelter now has ${((Shelter)shelterToUpdate).Money}.");
                     break;
                 case false:
@@ -438,6 +439,15 @@ namespace HumaneSociety
             adoptionToUpdate.ApprovalStatus = "pending";
             animalToAdopt.AdoptionStatus = "pending";
             adoptionToUpdate.AdoptionFee = 75;
+            adoptionToUpdate.PaymentCollected = false;
+            db.SubmitChanges();
+        }
+
+        public static void CreateAdoption(Animal animal, Client client)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            Adoption newAdoption = new Adoption() { AnimalId = animal.AnimalId, ClientId = client.ClientId };
+            db.Adoptions.InsertOnSubmit(newAdoption);
             db.SubmitChanges();
         }
 
