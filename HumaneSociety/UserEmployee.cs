@@ -180,19 +180,19 @@ namespace HumaneSociety
         private void DisplayShotMenu(Animal animal)
         {
             string shotName;
-            UserInterface.DisplayUserOptions(new List<string>() { "What would you like to do? (Choose a number)", "1. Administer a new shot", "2. Update a shot", "3. Exit" });
-            int input = UserInterface.GetIntegerData();
             bool isEditingShots = true;
             while (isEditingShots)
             {
+                UserInterface.DisplayUserOptions(new List<string>() { "What would you like to do? (Choose a number)", "1. Administer a new shot", "2. Update a shot", "3. Exit" });
+                int input = UserInterface.GetIntegerData();
                 switch (input)
                 {
                     case 1:
-                        shotName = UserInterface.GetStringData("the shot's", "name");
+                        shotName = UserInterface.GetStringData("name", "the shot's");
                         Query.AdministerShot(shotName, animal);
                         break;
                     case 2:
-                        shotName = UserInterface.GetStringData("the shot's", "name");
+                        shotName = UserInterface.GetStringData("name", "the shot's");
                         Query.UpdateShot(shotName, animal);
                         break;
                     case 3:
@@ -298,7 +298,7 @@ namespace HumaneSociety
             {
                 Console.Clear();
                 employee = Query.EmployeeLogin(userName, password);
-                UserInterface.DisplayUserOptions("Login successfull. Welcome.");
+                UserInterface.DisplayUserOptions("Login successful. Welcome.");
             }
             catch
             {
