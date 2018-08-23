@@ -44,7 +44,7 @@ namespace HumaneSociety
         }
         protected override void RunUserMenus()
         {
-            List<string> options = new List<string>() { "1. Search for animals", "2. Update info", "3. Apply for Adoption", "4. Check Adoption Status" };
+            List<string> options = new List<string>() { "1. Search for animals", "2. Update info", "3. Apply for Adoption", "4. Check Adoption Status", "5. Return to Log In"};
             Console.Clear();
             CheckIfAccountComplete();
             UserInterface.DisplayUserOptions(options);
@@ -72,6 +72,10 @@ namespace HumaneSociety
                 case 4:
                     CheckAdoptionStatus();
                     RunUserMenus();
+                    return;
+                case 5:
+                    PointOfEntry.Run();
+                    Console.Clear();
                     return;
                 default:
                     UserInterface.DisplayUserOptions("Input not accepted please try again");
