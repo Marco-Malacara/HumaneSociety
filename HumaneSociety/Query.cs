@@ -689,106 +689,36 @@ namespace HumaneSociety
                         }
                         break;
                     case 8:
-                        if (s[j].Trim() == "1")
+                        switch (s[j].Trim())
                         {
-                            animal.PetFriendly = true;
-                        }
-                        else if (s[j].Trim() == "0")
-                        {
-                            animal.PetFriendly = false;
+                            case "1":
+                                animal.PetFriendly = true;
+                                break;
+                            case "0":
+                                animal.PetFriendly = false;
+                                break;
                         }
                         break;
                     case 9:
                         animal.Gender = s[j].Trim().Replace("\"", "");
                         break;
                     case 10:
-                        if (s[j].Trim().Replace("\"", "") == "not adopted")
+                        switch (s[j].Trim().Replace("\"", ""))
                         {
-                            animal.AdoptionStatus = "available";
-                        }
-                        else
-                        {
-                            animal.AdoptionStatus = s[j].Trim().Replace("\"", "");
+                            case "not adopted":
+                                animal.AdoptionStatus = "available";
+                                break;
+                            default:
+                                animal.AdoptionStatus = s[j].Trim().Replace("\"", "");
+                                break;
+
                         }
                         break;
                     case 11:
                         animal.EmployeeId = Convert.ToInt32(s[j]);
                         break;
-
-
                 }
             }
-            
-            if (s[j].Trim().Replace("\"","") == "null")
-            {
-                //We don't need to insert null to the database, so nothing will happen in this method if the value in the file is null.
-            }
-            else if (j == 0)
-            {
-                animal.Name = s[j].Trim().Replace("\"","");
-            } 
-            else if (j == 1)
-            {
-                animal.SpeciesId = Convert.ToInt32(s[j]);
-            }
-            else if (j == 2)
-            {
-                animal.Weight = Convert.ToInt32(s[j]);
-            }
-            else if (j == 3)
-            {
-                animal.Age = Convert.ToInt32(s[j]);
-            }
-            else if (j == 4)
-            {
-                animal.DietPlanId = Convert.ToInt32(s[j]);
-            }
-            else if (j == 6)
-            {
-                animal.Demeanor = s[j].Trim().Replace("\"", "");
-            }
-            else if (j == 7)
-            {
-                if (s[j].Trim() == "1")
-                {
-                    animal.KidFriendly = true;
-                }
-                else if (s[j].Trim() == "0")
-                {
-                    animal.KidFriendly = false;
-                }
-            }
-            else if (j == 8)
-            {
-                if (s[j].Trim() == "1")
-                {
-                    animal.PetFriendly = true;
-                } 
-                else if (s[j].Trim() == "0")
-                {
-                    animal.PetFriendly = false;
-                }
-            }
-            else  if (j == 9)
-            {
-                animal.Gender = s[j].Trim().Replace("\"", "");
-            }
-            else if (j == 10)
-            {
-                if (s[j].Trim().Replace("\"", "") == "not adopted")
-                {
-                    animal.AdoptionStatus = "available";
-                }
-                else
-                {
-                    animal.AdoptionStatus = s[j].Trim().Replace("\"", "");
-                }
-            }
-            else if (j == 11)
-            {
-                animal.EmployeeId = Convert.ToInt32(s[j]);
-            }
-
         }
 
         private static bool ValidateFileInput(int i, string columnValue, HumaneSocietyDataContext db)

@@ -67,6 +67,7 @@ namespace HumaneSociety
         private void ImportCSVFile()
         {
             Console.WriteLine("Enter name of .csv file to import:");
+            Console.WriteLine("Import Format: Please enter entire file path.");
             string file = Console.ReadLine();
             bool shouldImportFile = Query.CheckIfCSVFileValid(file);
             if (shouldImportFile == true)
