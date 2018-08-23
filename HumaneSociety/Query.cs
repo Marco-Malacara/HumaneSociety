@@ -357,7 +357,7 @@ namespace HumaneSociety
         public static DietPlan GetDietPlan()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            string dietPlanName = UserInterface.GetStringData("the animal's", "diet plan");
+            string dietPlanName = UserInterface.GetStringData("diet plan", "the animal's");
             if (!NameIsInDietPlanTable(db, dietPlanName))
             {
                 db.DietPlans.InsertOnSubmit(new DietPlan() { Name = dietPlanName,
@@ -458,7 +458,16 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var animalToDisplay = db.Animals.Distinct().Single(a => a.AnimalId == animal.AnimalId);
             Room animalRoom = GetRoom(animalToDisplay.AnimalId, db);
-            List<string> info = new List<string>() { "ID: " + animalToDisplay.AnimalId, animalToDisplay.Name, animalToDisplay.Age + " years old", "Demeanor: " + animalToDisplay.Demeanor, "Kid friendly: " + UserInterface.BoolToYesNo(animalToDisplay.KidFriendly), "Pet friendly: " + UserInterface.BoolToYesNo(animalToDisplay.PetFriendly), "Location: " + animalRoom.RoomId, "Weight: " + animalToDisplay.Weight.ToString(), "Food amount in cups: " + animalToDisplay.DietPlan.FoodAmountInCups, "Food type: " + animalToDisplay.DietPlan.FoodType };
+            string aRoom;
+            if (animalRoom == null)
+            {
+                aRoom = "no room assigned";
+            }
+            else
+            {
+                aRoom = animalRoom.RoomId.ToString();
+            }
+            List<string> info = new List<string>() { "ID: " + animalToDisplay.AnimalId, animalToDisplay.Name, animalToDisplay.Age + " years old", "Demeanor: " + animalToDisplay.Demeanor, "Kid friendly: " + UserInterface.BoolToYesNo(animalToDisplay.KidFriendly), "Pet friendly: " + UserInterface.BoolToYesNo(animalToDisplay.PetFriendly), "Location: " + aRoom, "Weight: " + animalToDisplay.Weight.ToString(), "Food amount in cups: " + animalToDisplay.DietPlan.FoodAmountInCups, "Food type: " + animalToDisplay.DietPlan.FoodType };
             UserInterface.DisplayUserOptions(info);
             Console.ReadLine();
 
@@ -497,7 +506,6 @@ namespace HumaneSociety
                 {
                     display += $"{animal.Name}, ";
                 }
-                display.Remove(display.Length - 3);
                 Console.WriteLine($"Animals: {display}");
             }
             Console.WriteLine("Employee I.D. " + employee.EmployeeId);
