@@ -99,7 +99,8 @@ namespace HumaneSociety
             {
                 UpdateEmployeeInfo(employee);
                 Query.RunEmployeeQueries(employee, "update");
-                UserInterface.DisplayUserOptions("Employee update successful.");
+                UserInterface.DisplayUserOptions("Employee update successful. Press Enter to continue.");
+                Console.ReadLine();
             }
             catch
             {
@@ -154,6 +155,8 @@ namespace HumaneSociety
                 int employeeid = UserInterface.GetIntegerData("id number", "the employee's");
                 Employee employee = Query.GetEmployeeById(employeeid);
                 Query.RunEmployeeQueries(employee, "read");
+                Console.WriteLine("Press Enter to continue.");
+                Console.ReadLine();
             }
             catch
             {
@@ -173,7 +176,8 @@ namespace HumaneSociety
             {
                 Console.Clear();
                 Query.RunEmployeeQueries(employee, "delete");
-                UserInterface.DisplayUserOptions("Employee successfully removed");
+                UserInterface.DisplayUserOptions("Employee successfully removed. Press Enter to continue.");
+                Console.ReadLine();
             }
             catch
             {
@@ -193,7 +197,8 @@ namespace HumaneSociety
             try
             {
                 Query.RunEmployeeQueries(employee, "create");
-                UserInterface.DisplayUserOptions("Employee addition successful.");
+                UserInterface.DisplayUserOptions("Employee addition successful. Press Enter to continue.");
+                Console.ReadLine();
             }
             catch
             {
