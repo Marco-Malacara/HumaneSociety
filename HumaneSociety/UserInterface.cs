@@ -132,8 +132,10 @@ namespace HumaneSociety
             }
         }
 
-        internal static void DisplayClientInfo(Client client)
+        internal static void DisplayClientInfo(int clientId)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var client = db.Clients.Distinct().SingleOrDefault(Client => Client.ClientId == clientId);
             List<string> info = new List<string>() { client.FirstName, client.LastName, client.Email, "Number of kids: " + client.NumberOfKids.ToString(), "Home size: " + client.HomeSquareFootage.ToString(), "Income: " + client.Income.ToString(), client.Address.USState.Name };
             DisplayUserOptions(info);
             Console.ReadLine();        }

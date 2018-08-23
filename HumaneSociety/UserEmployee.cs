@@ -78,6 +78,12 @@ namespace HumaneSociety
                 UserInterface.DisplayUserOptions(adoptionInfo);
                 UserInterface.DisplayUserOptions("Enter the number of the adoption you would like to approve");
                 int input = UserInterface.GetIntegerData();
+                if (input < adoptions.Count || input > adoptions.Count)
+                {
+                    Console.WriteLine("Invalid id. Please try again");
+                    CheckAdoptions();
+                    return;
+                }
                 ApproveAdoption(adoptions[input - 1]);
             }
 
@@ -85,8 +91,8 @@ namespace HumaneSociety
 
         private void ApproveAdoption(Adoption adoption)
         {
-            Query.DisplayAnimalInfo(adoption.Animal);
-            UserInterface.DisplayClientInfo(adoption.Client);
+            Query.DisplayAnimalInfo((int)adoption.AnimalId);
+            UserInterface.DisplayClientInfo((int)adoption.ClientId);
             UserInterface.DisplayUserOptions("Would you approve this adoption?");
             if ((bool)UserInterface.GetBitData())
             {

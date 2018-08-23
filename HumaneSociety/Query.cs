@@ -475,10 +475,10 @@ namespace HumaneSociety
             runQueries(employee);
         }
 
-        public static void DisplayAnimalInfo(Animal animal)
+        public static void DisplayAnimalInfo(int animalId)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var animalToDisplay = db.Animals.Distinct().Single(a => a.AnimalId == animal.AnimalId);
+            var animalToDisplay = db.Animals.Distinct().Single(a => a.AnimalId == animalId);
             Room animalRoom = GetRoom(animalToDisplay.AnimalId, db);
             string aRoom;
             if (animalRoom == null)
