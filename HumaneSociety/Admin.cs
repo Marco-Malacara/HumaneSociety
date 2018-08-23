@@ -14,7 +14,7 @@ namespace HumaneSociety
             string password = UserInterface.GetUserInput();
             if (password.ToLower() != "poiuyt")
             {
-                UserInterface.DisplayUserOptions("Incorrect password please try again or type reset to go back to the main menu.");
+                UserInterface.DisplayUserOptions("Incorrect password. Please try again or type reset to go back to the main menu.");
                 LogIn();
             }
             else
@@ -26,7 +26,7 @@ namespace HumaneSociety
         protected override void RunUserMenus()
         {
             Console.Clear();
-            List<string> options = new List<string>() { "Admin log in successful.", "What would you like to do?", "1. Create new employee", "2. Delete employee", "3. Read employee info ", "4. Update emplyee info", "5. Import csv file of new animals", "6. Return to Log In", "(type 1, 2, 3, 4, 5,  create, read, update, delete, import, or return to Log In)" };
+            List<string> options = new List<string>() { "Admin log in successful.", "What would you like to do?", "1. Create new employee", "2. Delete employee", "3. Read employee info ", "4. Update employee info", "5. Import csv file of new animals", "6. Return to Log In", "(type 1, 2, 3, 4, 5,  create, read, update, delete, import, or return to Log In)" };
             UserInterface.DisplayUserOptions(options);
             string input = UserInterface.GetUserInput();
             RunInput(input);
