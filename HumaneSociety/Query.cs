@@ -60,11 +60,8 @@ namespace HumaneSociety
 
         public static IEnumerable<Animal> SearchForAnimalByMultipleTraits(Dictionary<int,string> searchParameters)
         {
-
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
             var animals = from data in db.Animals select data;
-
             if (searchParameters.ContainsKey(1))
             {
                 animals = (from animal in animals where animal.Specy.Name == searchParameters[1] select animal);
