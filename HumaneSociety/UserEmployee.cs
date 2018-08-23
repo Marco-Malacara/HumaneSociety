@@ -188,6 +188,8 @@ namespace HumaneSociety
                 switch (input)
                 {
                     case 1:
+                        Console.WriteLine("Existing shots (you can choose an existing shot or type another shot name to create a new one):");
+                        Query.DisplayAvailableShots();
                         shotName = UserInterface.GetStringData("name", "the shot's");
                         Query.AdministerShot(shotName, animal);
                         break;
@@ -278,9 +280,9 @@ namespace HumaneSociety
             Console.Clear();
             Animal animal = new Animal();
             animal.Specy = Query.GetSpecies();
-            animal.Name = UserInterface.GetStringData("name", "the animal's");
-            animal.Age = UserInterface.GetIntegerData("age", "the animal's");
-            animal.Demeanor = UserInterface.GetStringData("demeanor", "the animal's");
+            animal.Name = UserInterface.GetStringData("the animal's", "name");
+            animal.Age = UserInterface.GetIntegerData("the animal's", "age");
+            animal.Demeanor = UserInterface.GetStringData("the animal's", "demeanor");
             animal.KidFriendly = UserInterface.GetBitData("the animal", "child friendly");
             animal.PetFriendly = UserInterface.GetBitData("the animal", "pet friendly");
             animal.Weight = UserInterface.GetIntegerData("the animal", "the weight of the");
