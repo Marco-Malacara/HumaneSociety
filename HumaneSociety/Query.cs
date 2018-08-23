@@ -481,11 +481,12 @@ namespace HumaneSociety
         private static void ReadEmployee(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            Console.WriteLine("Firstname: " + employee.FirstName);
-            Console.WriteLine("Lastname: " + employee.LastName);
-            Console.WriteLine("Username: " + employee.UserName);
-            Console.WriteLine("Password: " + employee.Password);
-            Console.WriteLine("Email: " + employee.Email);
+            var employeeToRead = db.Employees.SingleOrDefault(Employee => employee.EmployeeId == Employee.EmployeeId);
+            Console.WriteLine("Firstname: " + employeeToRead.FirstName);
+            Console.WriteLine("Lastname: " + employeeToRead.LastName);
+            Console.WriteLine("Username: " + employeeToRead.UserName);
+            Console.WriteLine("Password: " + employeeToRead.Password);
+            Console.WriteLine("Email: " + employeeToRead.Email);
             if (GetEmployeeAnimals(employee).Count() == 0)
             {
                 Console.WriteLine("Animals: no animals assigned");
