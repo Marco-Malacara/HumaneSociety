@@ -25,6 +25,7 @@ namespace HumaneSociety
                     animalToUpdate.AdoptionStatus = "adopted";
                     adoptionToUpdate.AdoptionFee = 0;
                     ((Shelter)shelterToUpdate).Money += 75;
+                    Console.WriteLine($"Shelter now has ${((Shelter)shelterToUpdate).Money}.");
                     break;
                 case false:
                     adoptionToUpdate.ApprovalStatus = "available";
