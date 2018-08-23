@@ -593,6 +593,73 @@ namespace HumaneSociety
 
         public static void InsertColumnToNewAnimal(Animal animal, HumaneSocietyDataContext db, int j, List<string> s)
         {
+            if (s[j].Trim().Replace("\"", "") == "null")
+            {
+                //We don't need to insert null to the database, so nothing will happen in this method if the value in the file is null.
+            }
+            else
+            {
+                switch (j)
+                {
+                    case 0:
+                        animal.Name = s[j].Trim().Replace("\"", "");
+                        break;
+                    case 1:
+                        animal.SpeciesId = Convert.ToInt32(s[j]);
+                        break;
+                    case 2:
+                        animal.Weight = Convert.ToInt32(s[j]);
+                        break;
+                    case 3:
+                        animal.Age = Convert.ToInt32(s[j]);
+                        break;
+                    case 4:
+                        animal.DietPlanId = Convert.ToInt32(s[j]);
+                        break;
+                    case 6:
+                        animal.Demeanor = s[j].Trim().Replace("\"", "");
+                        break;
+                    case 7:
+                        if (s[j].Trim() == "1")
+                        {
+                            animal.KidFriendly = true;
+                        }
+                        else if (s[j].Trim() == "0")
+                        {
+                            animal.KidFriendly = false;
+                        }
+                        break;
+                    case 8:
+                        if (s[j].Trim() == "1")
+                        {
+                            animal.PetFriendly = true;
+                        }
+                        else if (s[j].Trim() == "0")
+                        {
+                            animal.PetFriendly = false;
+                        }
+                        break;
+                    case 9:
+                        animal.Gender = s[j].Trim().Replace("\"", "");
+                        break;
+                    case 10:
+                        if (s[j].Trim().Replace("\"", "") == "not adopted")
+                        {
+                            animal.AdoptionStatus = "available";
+                        }
+                        else
+                        {
+                            animal.AdoptionStatus = s[j].Trim().Replace("\"", "");
+                        }
+                        break;
+                    case 11:
+                        animal.EmployeeId = Convert.ToInt32(s[j]);
+                        break;
+
+
+                }
+            }
+            
             if (s[j].Trim().Replace("\"","") == "null")
             {
                 //We don't need to insert null to the database, so nothing will happen in this method if the value in the file is null.
@@ -735,6 +802,7 @@ namespace HumaneSociety
         private static bool ValidateEmployeeInput(int result, HumaneSocietyDataContext db)
         {
             return db.Employees.SingleOrDefault(e => e.EmployeeId == result) != null;
+            
         }
     }
 }
