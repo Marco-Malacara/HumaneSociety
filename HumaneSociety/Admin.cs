@@ -59,8 +59,8 @@ namespace HumaneSociety
             }
             else if (input == "6" || input.ToLower() == "return")
             {
-                PointOfEntry.Run();
                 Console.Clear();
+                PointOfEntry.Run();
             }
             else
             {

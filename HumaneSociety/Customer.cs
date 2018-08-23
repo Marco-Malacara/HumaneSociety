@@ -74,8 +74,8 @@ namespace HumaneSociety
                     RunUserMenus();
                     return;
                 case 5:
-                    PointOfEntry.Run();
                     Console.Clear();
+                    PointOfEntry.Run();
                     return;
                 default:
                     UserInterface.DisplayUserOptions("Input not accepted please try again");
