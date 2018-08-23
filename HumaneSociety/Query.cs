@@ -343,38 +343,27 @@ namespace HumaneSociety
 
         private static void UpdateRoom(Animal animalToUpdate, HumaneSocietyDataContext db, string userEnteredNumber)
         {
-            int possibleRoomNumber;
-            bool isInt = Int32.TryParse(userEnteredNumber, out possibleRoomNumber);
-            Room roomToClear;
-            Room roomToPopulate;
-            if (isInt == true)
+            int roomNumber = int.Parse(userEnteredNumber);
+            Room roomToClear = db.Rooms.SingleOrDefault(r => r.AnimalId == animalToUpdate.AnimalId);
+            if (roomToClear != null)
             {
-                roomToClear = db.Rooms.SingleOrDefault(r => r.AnimalId == animalToUpdate.AnimalId);
-                if (roomToClear != null)
+                roomToClear.AnimalId = null;
+            }
+            Room roomToPopulate = db.Rooms.SingleOrDefault(r => r.RoomNumber == roomNumber);
+            if (roomToPopulate != null)
+            {
+                if (roomToPopulate.AnimalId == null)
                 {
-                    roomToClear.AnimalId = null;
-                }
-                roomToPopulate = db.Rooms.SingleOrDefault(r => r.RoomNumber == possibleRoomNumber);
-                if (roomToPopulate != null)
-                {
-                    if (roomToPopulate.AnimalId == null)
-                    {
-                        roomToPopulate.AnimalId = animalToUpdate.AnimalId;
-                    }
-                    else
-                    {
-                        Console.WriteLine("The room was not updated because the room is already taken.");
-                    }
+                    roomToPopulate.AnimalId = animalToUpdate.AnimalId;
                 }
                 else
                 {
-                    Console.WriteLine("Room number to move animal to was not found.");
+                    Console.WriteLine("The room was not updated because the room is already taken.");
                 }
-
             }
             else
             {
-                Console.WriteLine("Room number entered was not a number.");
+                Console.WriteLine("Room number to move animal to was not found.");
             }
         }
 
