@@ -25,7 +25,7 @@ namespace HumaneSociety
         protected override void RunUserMenus()
         {
             Console.Clear();
-            List<string> options = new List<string>() { "Admin log in successful.", "What would you like to do?", "1. Create new employee", "2. Delete employee", "3. Read employee info ", "4. Update emplyee info", "5. Import csv file of new animals", "(type 1, 2, 3, 4, 5,  create, read, update, delete, or import)" };
+            List<string> options = new List<string>() { "Admin log in successful.", "What would you like to do?", "1. Create new employee", "2. Delete employee", "3. Read employee info ", "4. Update emplyee info", "5. Import csv file of new animals", "6. Return to Log In", "(type 1, 2, 3, 4, 5,  create, read, update, delete, import, or return to Log In)" };
             UserInterface.DisplayUserOptions(options);
             string input = UserInterface.GetUserInput();
             RunInput(input);
@@ -56,6 +56,11 @@ namespace HumaneSociety
             {
                 ImportCSVFile();
                 RunUserMenus(); 
+            }
+            else if (input == "6" || input.ToLower() == "return")
+            {
+                PointOfEntry.Run();
+                Console.Clear();
             }
             else
             {
