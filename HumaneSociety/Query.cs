@@ -17,11 +17,14 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var adoptionToUpdate = db.Adoptions.Single(a => adoption.AdoptionId == a.AdoptionId);
             var animalToUpdate = db.Animals.Single(Animal => Animal.AnimalId == adoption.AnimalId);
+            var shelterToUpdate = db.Shelters.Select(Shelter => Shelter);
             switch (isApproved)
             {
                 case true:
                     adoptionToUpdate.ApprovalStatus = "approved";
                     animalToUpdate.AdoptionStatus = "adopted";
+                    adoptionToUpdate.AdoptionFee = 0;
+                    ((Shelter)shelterToUpdate).Money += 75;
                     break;
                 case false:
                     adoptionToUpdate.ApprovalStatus = "available";
