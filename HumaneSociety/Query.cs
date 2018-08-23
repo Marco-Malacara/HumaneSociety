@@ -285,11 +285,11 @@ namespace HumaneSociety
             }
             if (updates.ContainsKey(8))
             {
-                Console.WriteLine("Id was not updated because id cannot be changed.");
+                UpdateRoom(animalToUpdate, updates[9]);
             }
             if (updates.ContainsKey(9))
             {
-                UpdateRoom(animalToUpdate, updates[9]);
+                Console.WriteLine("Id was not updated because id cannot be changed.");
             }
             db.SubmitChanges();
             return;
