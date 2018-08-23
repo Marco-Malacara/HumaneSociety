@@ -87,16 +87,18 @@ namespace HumaneSociety
                 if (searchParameters[5].ToLower().Trim() == "true" || searchParameters[5].ToLower().Trim() == "yes" || searchParameters[5] == "1")
                 {
                     parameter = true;
+                    animals = (from animal in animals where animal.KidFriendly == parameter select animal);
                 }
                 else if (searchParameters[5].ToLower().Trim() == "false" || searchParameters[5].ToLower().Trim() == "no" || searchParameters[5] == "0")
                 {
                     parameter = false;
+                    animals = (from animal in animals where animal.KidFriendly == parameter select animal);
                 }
                 else
                 {
-                    //error handling
+                    Console.WriteLine("Could not search by Kid Friendly value because the value entered was not valid.");
                 }
-                animals = (from animal in animals where animal.KidFriendly == parameter select animal);
+                
             }
             if (searchParameters.ContainsKey(6))
             {
@@ -104,16 +106,18 @@ namespace HumaneSociety
                 if (searchParameters[6].ToLower().Trim() == "true" || searchParameters[6].ToLower().Trim() == "yes" || searchParameters[6] == "1")
                 {
                     parameter = true;
+                    animals = (from animal in animals where animal.PetFriendly == parameter select animal);
                 }
                 else if (searchParameters[6].ToLower().Trim() == "false" || searchParameters[6].ToLower().Trim() == "no" || searchParameters[6] == "0")
                 {
                     parameter = false;
+                    animals = (from animal in animals where animal.PetFriendly == parameter select animal);
                 }
                 else
                 {
-                    //error handling
+                    Console.WriteLine("Could not search by Pet Friendly value because the value entered was not valid.");
                 }
-                animals = (from animal in animals where animal.PetFriendly == parameter select animal);
+                
             }
             if (searchParameters.ContainsKey(7))
             {
@@ -543,7 +547,7 @@ namespace HumaneSociety
                     if (columnIsValid == false)
                     {
                         rowIsValid = false;
-                        Console.WriteLine($"Column containing {s[i]} was invalid. Row {i + 1} from file was skipped.");
+                        Console.WriteLine($"Column containing {s[i]} was invalid. The row with this column was skipped.");
                         break;
                     }
                 }
