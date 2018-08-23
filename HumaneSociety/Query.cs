@@ -491,6 +491,7 @@ namespace HumaneSociety
             }
             List<string> info = new List<string>() { "ID: " + animalToDisplay.AnimalId, animalToDisplay.Name, animalToDisplay.Age + " years old", "Demeanor: " + animalToDisplay.Demeanor, "Kid friendly: " + UserInterface.BoolToYesNo(animalToDisplay.KidFriendly), "Pet friendly: " + UserInterface.BoolToYesNo(animalToDisplay.PetFriendly), "Location: " + aRoom, "Weight: " + animalToDisplay.Weight.ToString(), "Food amount in cups: " + animalToDisplay.DietPlan.FoodAmountInCups, "Food type: " + animalToDisplay.DietPlan.FoodType };
             UserInterface.DisplayUserOptions(info);
+            Console.WriteLine("Press enter to continue");
             Console.ReadLine();
 
         }

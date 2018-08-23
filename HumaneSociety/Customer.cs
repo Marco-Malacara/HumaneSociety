@@ -354,8 +354,10 @@ namespace HumaneSociety
                 case 8:
                     UpdateHomeSize();
                     break;
+                case 9:
+                    return;
                 default:
-                    UserInterface.DisplayUserOptions("You have reached this message in error please contact support or administator and give them code 10928849");
+                    UserInterface.DisplayUserOptions("You have reached this message in error. Type something different");
                     break;
             }
 
