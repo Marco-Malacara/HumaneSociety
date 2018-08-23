@@ -162,9 +162,9 @@ namespace HumaneSociety
             {
                 var possibleSpecies = db.Species.SingleOrDefault(s => updates[1].ToLower().Trim() == s.Name.ToLower());
                 if (possibleSpecies == null)
-                {
-                    throw new Exception("Species could not be updated because a valid species was not found.");
-                    //function to create new species?
+                {   
+                    CreateNewSpecies(updates[1].ToLower().Trim(), db);
+                    animalToUpdate.SpeciesId = db.Species.Single(s => s.Name == updates[1].ToLower().Trim()).SpeciesId;
                 }
                 else
                 {
@@ -294,11 +294,16 @@ namespace HumaneSociety
             string speciesName = UserInterface.GetStringData("the animal's", "species");
             if (!NameIsInSpeciesTable(db, speciesName))
             {
-                db.Species.InsertOnSubmit(new Specy() { Name = speciesName });
-                db.SubmitChanges();
+                CreateNewSpecies(speciesName, db);
             }
             var selectedSpecy = db.Species.Distinct().SingleOrDefault(Specy => Specy.Name.ToLower() == speciesName.ToLower());
             return selectedSpecy;
+        }
+
+        private static void CreateNewSpecies(string speciesName, HumaneSocietyDataContext db)
+        {
+            db.Species.InsertOnSubmit(new Specy() { Name = speciesName });
+            db.SubmitChanges();
         }
 
         public static DietPlan GetDietPlan()
