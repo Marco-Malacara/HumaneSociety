@@ -218,13 +218,12 @@ namespace HumaneSociety
                     searchParameters.Add(7, UserInterface.GetIntegerData("weight", "the animal's").ToString());
                     return searchParameters;
                 case "8":
-                    Console.WriteLine("Note: check the animal status to find their current room number.");
-                    searchParameters.Add(9, UserInterface.GetIntegerData("room", "the animal's").ToString());
+                    searchParameters.Add(8, UserInterface.GetIntegerData("room", "the animal's").ToString());
                     return searchParameters;
-                //case "9":
-                //    searchParameters.Add(8, UserInterface.GetIntegerData("ID", "the animal's").ToString());
-                //    return searchParameters;
-                
+                case "9":
+                    searchParameters.Add(9, UserInterface.GetIntegerData("ID", "the animal's").ToString());
+                    return searchParameters;
+
                 default:
                     UserInterface.DisplayUserOptions("Input not recognized please try agian");
                     return searchParameters;

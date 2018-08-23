@@ -285,7 +285,7 @@ namespace HumaneSociety
             }
             if (updates.ContainsKey(8))
             {
-                UpdateRoom(animalToUpdate, updates[9]);
+                UpdateRoom(animalToUpdate, updates[8]);
             }
             if (updates.ContainsKey(9))
             {
