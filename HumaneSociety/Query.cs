@@ -425,7 +425,7 @@ namespace HumaneSociety
             Console.WriteLine("Password: " + employee.Password);
             Console.WriteLine("Email: " + employee.Email);
             Console.WriteLine("Animals: " + employee.Animals);
-            Console.WriteLine("Emloyee I.D. " + employee.EmployeeId);
+            Console.WriteLine("Employee I.D. " + employee.EmployeeId);
             Console.WriteLine("Employee Number: " + employee.EmployeeNumber);
             Console.WriteLine("Press [ENTER] to continue.");
             Console.ReadLine();
@@ -443,7 +443,7 @@ namespace HumaneSociety
         private static void DeleteEmployee(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var employeeToDelete = db.Employees.SingleOrDefault(user => user.EmployeeNumber == employee.EmployeeNumber);
+            var employeeToDelete = db.Employees.SingleOrDefault(user => user.EmployeeId == employee.EmployeeId);
             if (employeeToDelete != null)
             {
                 db.Employees.DeleteOnSubmit(employeeToDelete);

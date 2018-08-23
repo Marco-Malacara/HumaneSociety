@@ -84,11 +84,10 @@ namespace HumaneSociety
 
         private void UpdateEmployee()
         {
-            Employee employee = new Employee();
-            employee.FirstName = UserInterface.GetStringData("first name", "the employee's");
-            employee.LastName = UserInterface.GetStringData("last name", "the employee's");
-            employee.EmployeeId = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
-            employee.Email = UserInterface.GetStringData("email", "the employee's");
+            List<Employee> employees = Query.GetEmployees().ToList();
+            UserInterface.DisplayEmployees(employees);
+            int employeeid = UserInterface.GetIntegerData("id number", "the employee's");
+            Employee employee = Query.GetEmployeeById(employeeid);
             try
             {
                 Query.RunEmployeeQueries(employee, "update");
@@ -122,9 +121,10 @@ namespace HumaneSociety
 
         private void RemoveEmployee()
         {
-            Employee employee = new Employee();
-            employee.LastName = UserInterface.GetStringData("last name", "the employee's"); ;
-            employee.EmployeeNumber = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
+            List<Employee> employees = Query.GetEmployees().ToList();
+            UserInterface.DisplayEmployees(employees);
+            int employeeid = UserInterface.GetIntegerData("id number", "the employee's");
+            Employee employee = Query.GetEmployeeById(employeeid);
             try
             {
                 Console.Clear();
