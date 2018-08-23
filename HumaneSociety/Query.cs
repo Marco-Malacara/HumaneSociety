@@ -517,8 +517,12 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var employeeToUpdate = db.Employees.Distinct().Single(user => user.EmployeeId == employee.EmployeeId);
 
-            employeeToUpdate = employee;
-            db.Employees.InsertOnSubmit(employeeToUpdate);
+            employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.LastName = employee.LastName;
+            employeeToUpdate.Email = employee.Email;
+            employeeToUpdate.UserName = employee.UserName;
+            employeeToUpdate.Password = employee.Password;
+            employeeToUpdate.EmployeeNumber = employee.EmployeeNumber;
             db.SubmitChanges();
         }
 
